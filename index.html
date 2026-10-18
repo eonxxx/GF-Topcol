@@ -34,10 +34,10 @@
 <!-- Fuentes y estilos -->
 <link rel="preload" href="fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=6">
+<link rel="stylesheet" href="css/styles.css?v=7">
 
 <!-- Configuración, tema y animación (antes de pintar la página, para que no parpadee) -->
-<script src="js/config.js?v=6"></script>
+<script src="js/config.js?v=7"></script>
 <script>
 (function(){
   var d=document.documentElement,c=typeof CONFIG!=='undefined'?CONFIG:{},t=null,m=null;
@@ -50,10 +50,10 @@
   if(location.protocol==='file:'){var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:wght@300..900&family=JetBrains+Mono:wght@100..800&display=swap';document.head.appendChild(l)}
 })();
 </script>
-<script src="js/nucleo.js?v=6" defer></script>
-<script src="js/fondo.js?v=6" defer></script>
-<script src="js/paisajes.js?v=6" defer></script>
-<script src="js/main.js?v=6" defer></script>
+<script src="js/nucleo.js?v=7" defer></script>
+<script src="js/fondo.js?v=7" defer></script>
+<script src="js/paisajes.js?v=7" defer></script>
+<script src="js/main.js?v=7" defer></script>
 
 <!-- Datos estructurados para buscadores -->
 <script type="application/ld+json">
@@ -457,13 +457,8 @@
   </section>
 
   <!-- PANORAMA -->
-  <section class="pano" id="llano" aria-label="Paisaje de campo">
-    <canvas id="panoCanvas" aria-hidden="true"></canvas>
-    <div class="wrap pano-in">
-      <p class="eyebrow reveal"><span class="dot"></span>Trabajo de campo</p>
-      <h2 class="reveal" style="--d:.08s">Del dron al plano,<br><span class="grad">hecho en Colombia.</span></h2>
-      <div class="btn-row reveal" style="--d:.16s"><a class="btn primary" href="#cotizar">Cotizar mi terreno</a></div>
-    </div>
+  <section class="pano" id="llano" aria-hidden="true">
+    <canvas id="panoCanvas"></canvas>
   </section>
 
   <!-- COTIZACIÓN -->

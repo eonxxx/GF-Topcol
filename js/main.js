@@ -602,7 +602,7 @@ const proj=(()=>{
 /* Paisajes del inicio, del panorama, de equipos y del pie de página */
 const scLight=()=>root.dataset.theme==='light';
 Scape.mount($('#heroScape'),'llano',{seed:3,hz:(w,h)=>w<760?.64:.7,amp:.8,palmS:.58,sunX:.8,clouds:4,birds:4,riverX:.46,palmX:[.86,.93,.8,.98],cows:[[.3,.93,1],[.35,.955,-1]],pal:()=>scLight()?'day':'dusk',dpr:1,fps:24});
-Scape.mount($('#panoCanvas'),'llano',{seed:7,hz:.66,amp:.62,sunX:.82,riverX:.5,clouds:5,birds:5,palmX:[.08,.15,.93,.87],cows:[[.3,.9,1],[.36,.93,-1],[.7,.9,1]],pal:()=>scLight()?'dawn':'dusk',dpr:1.25,fps:30});
+Scape.mount($('#panoCanvas'),'llano',{seed:7,hz:.56,amp:.62,sunX:.82,riverX:.5,clouds:5,birds:5,palmX:[.08,.15,.93,.87],cows:[[.3,.9,1],[.36,.93,-1],[.7,.9,1]],pal:()=>scLight()?'dawn':'dusk',dpr:1.25,fps:30});
 Scape.mount($('#nightCanvas'),'noche',{seed:5,pal:()=>scLight()?'dawn':'night',dpr:1,fps:24});
 (()=>{
   const eqs=$$('.eq'),M=[['replanteo','dawn'],['finca','day'],['dron','day']];
