@@ -19,12 +19,15 @@ const linspace=(a,b,n)=>Array.from({length:n},(_,i)=>n>1?a+(b-a)*i/(n-1):a);
 const hex2rgb=h=>{h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]};
 const rgba=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';
 const mix=(a,b,t)=>[Math.round(lerp(a[0],b[0],t)),Math.round(lerp(a[1],b[1],t)),Math.round(lerp(a[2],b[2],t))];
-const C={peach:hex2rgb('#F3B79A'),rose:hex2rgb('#E7A8C4'),lav:hex2rgb('#B7A6F2'),mint:hex2rgb('#9FD8C4')};
-let HERO={a:C.peach,b:C.lav,dot:[255,255,255]};
+/* Colores de los dibujos (mismos nombres que en el CSS): peach = oro, rose = rojo, lav = azul acero, mint = verde */
+const C={peach:hex2rgb('#F2B731'),rose:hex2rgb('#E8705F'),lav:hex2rgb('#8DB3D6'),mint:hex2rgb('#8CCB8F')};
+/* Curvas de nivel: de azul acero (partes bajas) a arena dorada (partes altas); en modo claro, verde oliva a siena, como un mapa topográfico */
+const TOPO_OSCURO={a:hex2rgb('#6F9CC4'),b:hex2rgb('#D9B45A'),dot:[255,255,255]},TOPO_CLARO={a:hex2rgb('#5F7F55'),b:hex2rgb('#9B5B2E'),dot:[19,32,42]};
+let HERO=TOPO_OSCURO;
 function themeColors(){
   HERO=root.dataset.theme==='light'
-    ?{a:hex2rgb('#C9764F'),b:hex2rgb('#6E5BC9'),dot:[35,33,44]}
-    :{a:C.peach,b:C.lav,dot:[255,255,255]};
+    ?TOPO_CLARO
+    :TOPO_OSCURO;
 }
 
 /* Estado del interruptor de animación */
@@ -57,14 +60,14 @@ function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w
 function tag(ctx,txt,x,y,col){
   ctx.font='500 11px "JetBrains Mono",ui-monospace,monospace';
   const tw=ctx.measureText(txt).width;
-  rr(ctx,x,y-10,tw+14,20,10);ctx.fillStyle='rgba(20,18,26,.84)';ctx.fill();
+  rr(ctx,x,y-10,tw+14,20,10);ctx.fillStyle='rgba(12,22,30,.84)';ctx.fill();
   ctx.strokeStyle=rgba(col||C.lav,.55);ctx.lineWidth=1;ctx.stroke();
-  ctx.fillStyle='#F2EFF7';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(txt,x+7,y+.5);
+  ctx.fillStyle='#EEF2F4';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(txt,x+7,y+.5);
   return tw+14;
 }
 function cross(ctx,x,y,s,color){ctx.strokeStyle=color;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(x-s,y);ctx.lineTo(x+s,y);ctx.moveTo(x,y-s);ctx.lineTo(x,y+s);ctx.stroke()}
 function panelBg(ctx,w,h){
-  const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'#201E2A');g.addColorStop(1,'#17151E');
+  const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'#1A2833');g.addColorStop(1,'#111C25');
   ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
   ctx.strokeStyle='rgba(255,255,255,.045)';ctx.lineWidth=1;ctx.beginPath();
   for(let x=0;x<=w;x+=32){ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,h)}
@@ -145,7 +148,7 @@ function syncSwitches(){
   });
   $$('[data-state="theme"]').forEach(e=>{e.textContent=dark?'Activado':'Desactivado'});
   $$('[data-state="motion"]').forEach(e=>{e.textContent=on?'Las curvas y los paisajes se mueven':'Todo quieto'});
-  const m=$('meta[name="theme-color"]');if(m)m.setAttribute('content',dark?'#23212C':'#F2EFF7');
+  const m=$('meta[name="theme-color"]');if(m)m.setAttribute('content',dark?'#0F1A22':'#F3F5F3');
 }
 function setTheme(mode,save){
   root.setAttribute('data-theme',mode);

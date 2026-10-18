@@ -25,26 +25,26 @@ const svg=(k,c)=>'<svg class="ico'+(c?' '+c:'')+'" viewBox="0 0 24 24" aria-hidd
 const PLAZO='Según el área y el acceso; lo confirmamos al cotizar';
 const SERVICES=[
   {key:'lev',name:'Levantamiento topográfico',short:'Fincas, lotes y obras',
-   desc:'Medimos linderos, construcciones, vías y cotas con estación total y GPS RTK para que tengas el estado real del terreno.',
-   eq:'Estación total · GPS RTK',plazo:PLAZO,out:['Plano topográfico DWG','Georreferenciado en MAGNA-SIRGAS','Puntos XYZ']},
+   desc:'Medimos linderos, construcciones, vías y cotas con estación total y GNSS RTK para que tengas el estado real del terreno.',
+   eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Plano topográfico DWG','Georreferenciado en MAGNA-SIRGAS','Puntos XYZ']},
   {key:'lin',name:'Loteo y linderos',short:'División de predios y mojones',
    desc:'Dividimos el terreno en lotes, ubicamos los linderos y los marcamos en campo con mojones.',
-   eq:'Estación total · GPS RTK',plazo:PLAZO,out:['Plano de loteo','Cuadro de áreas y coordenadas','Mojones en campo']},
+   eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Plano de loteo','Cuadro de áreas y coordenadas','Mojones en campo']},
   {key:'vol',name:'Curvas de nivel y volúmenes',short:'Modelo 3D, cortes y llenos',
    desc:'Generamos el modelo del terreno con sus curvas de nivel y calculamos cortes, llenos y volúmenes. Mueve la cota de proyecto y mira cómo cambian.',
-   eq:'GPS RTK · Estación total · Dron',plazo:PLAZO,out:['Curvas de nivel','Modelo 3D','Perfiles y secciones','Cálculo de volúmenes']},
+   eq:'GNSS RTK · Estación total · Dron',plazo:PLAZO,out:['Curvas de nivel','Modelo 3D','Perfiles y secciones','Cálculo de volúmenes']},
   {key:'rep',name:'Replanteo de obra',short:'Del plano al terreno',
    desc:'Llevamos al terreno los ejes, esquinas y niveles de tu diseño: urbanismo, vías y edificaciones.',
-   eq:'Estación total · GPS RTK',plazo:PLAZO,out:['Estacado de ejes','Esquinas y niveles','Cartera de replanteo']},
-  {key:'dro',name:'Levantamiento con dron',short:'Áreas grandes o de difícil acceso',
-   desc:'Cubrimos grandes extensiones en poco tiempo y generamos ortofoto, modelo 3D y curvas de nivel.',
-   eq:'Dron · GPS RTK',plazo:PLAZO,out:['Ortofoto','Modelo 3D','Curvas de nivel','Cálculo de volúmenes']}
+   eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Estacado de ejes','Esquinas y niveles','Cartera de replanteo']},
+  {key:'dro',name:'Fotogrametría',short:'Áreas grandes o de difícil acceso',
+   desc:'Con vuelos de dron cubrimos grandes extensiones en poco tiempo y generamos ortomosaico, modelo 3D y curvas de nivel.',
+   eq:'Dron · GNSS RTK',plazo:PLAZO,out:['Ortomosaico','Modelo 3D','Curvas de nivel','Cálculo de volúmenes']}
 ];
 const PROJECTS=[
   {id:'p1',tipo:'predios',scene:'finca',pal:'day',seed:3,svc:'Levantamiento topográfico',tag:'Predios rurales',title:'Fincas y linderos',text:'Linderos, áreas y cercas de fincas ganaderas y agrícolas.',list:['Servicio: levantamiento topográfico y linderos','Entregables: plano DWG, cuadro de áreas y coordenadas']},
   {id:'p2',tipo:'obra',scene:'via',pal:'dusk',seed:5,svc:'Replanteo de obra',tag:'Vías y accesos',title:'Ejes y abscisado de vías',text:'Eje, perfil y secciones para vías veredales y accesos a predios.',list:['Servicio: levantamiento y replanteo de ejes','Entregables: perfil longitudinal, secciones y abscisado en campo']},
   {id:'p3',tipo:'predios',scene:'loteo',pal:'dawn',seed:7,svc:'Loteo y linderos',tag:'Loteo y urbanismo',title:'Loteo de un globo de terreno',text:'División en lotes, manzanas y vías, con su cuadro de áreas.',list:['Servicio: loteo y linderos','Entregables: plano de loteo, cuadro de áreas y mojones en campo']},
-  {id:'p4',tipo:'modelos',scene:'dron',pal:'day',seed:9,svc:'Levantamiento con dron',tag:'Dron',title:'Ortofoto y modelo del terreno',text:'Grandes extensiones levantadas desde el aire y apoyadas con GPS RTK.',list:['Servicio: levantamiento con dron y control GPS RTK','Entregables: ortofoto, nube de puntos y curvas de nivel']},
+  {id:'p4',tipo:'modelos',scene:'dron',pal:'day',seed:9,svc:'Fotogrametría',tag:'Fotogrametría',title:'Ortomosaico y modelo del terreno',text:'Grandes extensiones fotografiadas desde el aire, con puntos de control en GNSS RTK.',list:['Servicio: fotogrametría con puntos de control GNSS RTK','Entregables: ortomosaico, nube de puntos y curvas de nivel']},
   {id:'p5',tipo:'modelos',scene:'curvas',pal:'night',seed:11,svc:'Curvas de nivel y volúmenes',tag:'Curvas de nivel',title:'Relieve en curvas de nivel',text:'Modelo digital del terreno con curvas a la equidistancia que necesites.',list:['Servicio: curvas de nivel y modelo 3D','Entregables: curvas en DWG, modelo del terreno y perfiles']},
   {id:'p6',tipo:'obra',scene:'vol',pal:'day',seed:13,svc:'Curvas de nivel y volúmenes',tag:'Movimiento de tierras',title:'Cortes, llenos y volúmenes',text:'Volúmenes calculados sobre el terreno real, antes y después de la obra.',list:['Servicio: curvas de nivel y volúmenes','Entregables: secciones, cuadro de volúmenes y plano de cortes y llenos']},
   {id:'p7',tipo:'predios',scene:'catastro',pal:'dawn',seed:15,svc:'Loteo y linderos',tag:'Planos de predio',title:'Plano con coordenadas',text:'Predio dibujado con sus linderos, vértices, áreas y colindantes.',list:['Servicio: levantamiento y linderos','Entregables: plano georreferenciado en MAGNA-SIRGAS y cuadro de coordenadas']},
@@ -53,7 +53,7 @@ const PROJECTS=[
 const CATS=[
   {k:'predios',name:'Predios',desc:'Fincas, lotes y planos'},
   {k:'obra',name:'Obra',desc:'Vías, tierras y replanteo'},
-  {k:'modelos',name:'Dron y modelos',desc:'Ortofotos y relieve'}
+  {k:'modelos',name:'Fotogrametría y modelos',desc:'Ortomosaicos y relieve'}
 ];
 const go=id=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:MOTION.on?'smooth':'auto',block:'start'})};
 
@@ -119,7 +119,7 @@ const svc=(()=>{
     ctx.stroke();ctx.restore();
     for(let i=0;i<shown;i++){
       const x=P[i][0]*w,y=P[i][1]*h,age=tt-i*step;
-      cross(ctx,x,y,6,'#F2EFF7');ctx.fillStyle=rgba(C.mint,1);ctx.beginPath();ctx.arc(x,y,2.6,0,6.283);ctx.fill();
+      cross(ctx,x,y,6,'#EEF2F4');ctx.fillStyle=rgba(C.mint,1);ctx.beginPath();ctx.arc(x,y,2.6,0,6.283);ctx.fill();
       if(age<700){const p=age/700;ctx.strokeStyle=rgba(C.mint,.8*(1-p));ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,6+p*24,0,6.283);ctx.stroke()}
       tag(ctx,'P'+(i+1)+' · '+fmt(400+f(P[i][0],P[i][1])*80,2)+' m',clamp(x+10,4,w-124),y-14,C.mint);
     }
@@ -141,8 +141,8 @@ const svc=(()=>{
     for(let i=0;i<n;i++){
       const s=clamp((sp-i)*3,0,1);if(s<=0)continue;
       const x=V[i][0]*w,y=V[i][1]*h,z=5*s;
-      ctx.fillStyle='#F2EFF7';ctx.fillRect(x-z,y-z,z*2,z*2);ctx.strokeStyle=rgba(C.rose,1);ctx.lineWidth=1.5;ctx.strokeRect(x-z,y-z,z*2,z*2);
-      ctx.fillStyle='rgba(242,239,247,.7)';ctx.font='500 11px "JetBrains Mono",monospace';ctx.textBaseline='alphabetic';ctx.fillText('V'+(i+1),x+9,y-9);
+      ctx.fillStyle='#EEF2F4';ctx.fillRect(x-z,y-z,z*2,z*2);ctx.strokeStyle=rgba(C.rose,1);ctx.lineWidth=1.5;ctx.strokeRect(x-z,y-z,z*2,z*2);
+      ctx.fillStyle='rgba(238,242,244,.7)';ctx.font='500 11px "JetBrains Mono",monospace';ctx.textBaseline='alphabetic';ctx.fillText('V'+(i+1),x+9,y-9);
     }
     for(let i=0;i<n;i++){
       if(sp-i<1)continue;
@@ -160,7 +160,7 @@ const svc=(()=>{
     const padL=48,padR=14,padT=16,padB=28,gw=w-padL-padR,gh=h-padT-padB,ymin=4,ymax=16;
     const X=x=>padL+x/100*gw,Y=v=>padT+(1-(v-ymin)/(ymax-ymin))*gh;
     ctx.font='10px "JetBrains Mono",monospace';ctx.textBaseline='middle';ctx.textAlign='left';
-    ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.fillStyle='rgba(242,239,247,.55)';
+    ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.fillStyle='rgba(238,242,244,.55)';
     for(let v=6;v<=14;v+=2){ctx.beginPath();ctx.moveTo(padL,Y(v));ctx.lineTo(w-padR,Y(v));ctx.stroke();ctx.fillText(v+' m',6,Y(v))}
     ctx.textBaseline='alphabetic';
     for(let x=0;x<=100;x+=20)ctx.fillText(x+' m',X(x)-10,h-9);
@@ -197,13 +197,13 @@ const svc=(()=>{
     Tg.forEach((p,i)=>{
       const x=p[0]*w,y=p[1]*h;ctx.lineWidth=1.5;
       if(i<done){ctx.fillStyle=rgba(C.mint,.95);ctx.beginPath();ctx.arc(x,y,6,0,6.283);ctx.fill();ctx.strokeStyle=rgba(C.mint,.35);ctx.beginPath();ctx.arc(x,y,12,0,6.283);ctx.stroke()}
-      else{ctx.strokeStyle='rgba(242,239,247,.35)';ctx.beginPath();ctx.arc(x,y,6,0,6.283);ctx.stroke()}
-      ctx.fillStyle='rgba(242,239,247,.55)';ctx.fillText('R'+(i+1),x+10,y-9);
+      else{ctx.strokeStyle='rgba(238,242,244,.35)';ctx.beginPath();ctx.arc(x,y,6,0,6.283);ctx.stroke()}
+      ctx.fillStyle='rgba(238,242,244,.55)';ctx.fillText('R'+(i+1),x+10,y-9);
     });
     ctx.fillStyle=rgba(C.peach,1);ctx.beginPath();ctx.moveTo(ix,iy-11);ctx.lineTo(ix+10,iy+8);ctx.lineTo(ix-10,iy+8);ctx.closePath();ctx.fill();
-    ctx.fillStyle='rgba(242,239,247,.6)';ctx.fillText('EST',ix-10,iy+22);
+    ctx.fillStyle='rgba(238,242,244,.6)';ctx.fillText('EST',ix-10,iy+22);
     if(!finished){
-      ctx.strokeStyle='#F2EFF7';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px,py-18);ctx.stroke();
+      ctx.strokeStyle='#EEF2F4';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px,py-18);ctx.stroke();
       ctx.fillStyle=rgba(C.rose,1);ctx.beginPath();ctx.arc(px,py-20,4,0,6.283);ctx.fill();
       const dE=(cur[0]-I[0])*w*S,dN=-(cur[1]-I[1])*h*S,d=Math.hypot(dE,dN),az=(Math.atan2(dE,dN)*180/Math.PI+360)%360;
       tag(ctx,'R'+(idx+1)+' · '+fmt(d,3)+' m · Az '+fmt(az,0)+'°',clamp((ix+cur[0]*w)/2-50,6,w-190),clamp((iy+cur[1]*h)/2-16,14,h-14),C.lav);
@@ -224,8 +224,8 @@ const svc=(()=>{
     for(let i=1;i<pp.length;i++)cum.push(cum[i-1]+Math.hypot(pp[i][0]-pp[i-1][0],pp[i][1]-pp[i-1][1]));
     const Lt=cum[cum.length-1],prog=clamp((t%12000)/10500,0,1),dist=prog*Lt;
     const at=d=>{let i=1;while(i<cum.length-1&&cum[i]<d)i++;const s=clamp((d-cum[i-1])/Math.max(1e-6,cum[i]-cum[i-1]),0,1);return[lerp(pp[i-1][0],pp[i][0],s),lerp(pp[i-1][1],pp[i][1],s)]};
-    ctx.save();ctx.setLineDash([4,6]);ctx.strokeStyle='rgba(242,239,247,.3)';ctx.lineWidth=1;ctx.strokeRect(x0*w-12,y0*h-12,(x1-x0)*w+24,(y1-y0)*h+24);ctx.restore();
-    ctx.save();ctx.setLineDash([3,6]);ctx.strokeStyle='rgba(242,239,247,.2)';ctx.beginPath();pp.forEach((p,i)=>{if(i)ctx.lineTo(p[0],p[1]);else ctx.moveTo(p[0],p[1])});ctx.stroke();ctx.restore();
+    ctx.save();ctx.setLineDash([4,6]);ctx.strokeStyle='rgba(238,242,244,.3)';ctx.lineWidth=1;ctx.strokeRect(x0*w-12,y0*h-12,(x1-x0)*w+24,(y1-y0)*h+24);ctx.restore();
+    ctx.save();ctx.setLineDash([3,6]);ctx.strokeStyle='rgba(238,242,244,.2)';ctx.beginPath();pp.forEach((p,i)=>{if(i)ctx.lineTo(p[0],p[1]);else ctx.moveTo(p[0],p[1])});ctx.stroke();ctx.restore();
     const NF2=26,fw=w*.085,fh=fw*.7;
     for(let k=0;k<=NF2;k++){const d=k/NF2*Lt;if(d>dist)break;const p=at(d);ctx.fillStyle=rgba(C.mint,.07);ctx.fillRect(p[0]-fw/2,p[1]-fh/2,fw,fh);ctx.strokeStyle=rgba(C.mint,.26);ctx.lineWidth=1;ctx.strokeRect(p[0]-fw/2,p[1]-fh/2,fw,fh)}
     const cur=at(dist);
@@ -233,7 +233,7 @@ const svc=(()=>{
     for(let i=1;i<pp.length&&cum[i]<=dist;i++)ctx.lineTo(pp[i][0],pp[i][1]);
     ctx.lineTo(cur[0],cur[1]);ctx.stroke();
     ctx.fillStyle=rgba(C.peach,1);ctx.beginPath();ctx.arc(cur[0],cur[1],5,0,6.283);ctx.fill();
-    const ang=t*.03;ctx.strokeStyle='rgba(242,239,247,.85)';ctx.lineWidth=1.6;
+    const ang=t*.03;ctx.strokeStyle='rgba(238,242,244,.85)';ctx.lineWidth=1.6;
     [[-9,-9],[9,-9],[-9,9],[9,9]].forEach(o=>{const rx=cur[0]+o[0],ry=cur[1]+o[1];ctx.beginPath();ctx.moveTo(rx-Math.cos(ang)*5,ry-Math.sin(ang)*5);ctx.lineTo(rx+Math.cos(ang)*5,ry+Math.sin(ang)*5);ctx.stroke()});
     tag(ctx,'Cobertura '+Math.round(prog*100)+'%',12,h-18,C.mint);
   }
@@ -380,7 +380,7 @@ const calc=(()=>{
     if(drag<0)view=mkView();
     const V=view;if(!V)return;
     const gs=nice(60/V.s),e0=inv(V,0,h)[0],e1=inv(V,w,h)[0],n0=inv(V,0,h)[1],n1=inv(V,0,0)[1];
-    ctx.strokeStyle='rgba(183,166,242,.10)';ctx.lineWidth=1;ctx.beginPath();
+    ctx.strokeStyle='rgba(141,179,214,.12)';ctx.lineWidth=1;ctx.beginPath();
     for(let e=Math.ceil(e0/gs)*gs;e<=e1;e+=gs){const x=toXY(V,e,0)[0];ctx.moveTo(x,0);ctx.lineTo(x,h)}
     for(let n=Math.ceil(n0/gs)*gs;n<=n1;n+=gs){const y=toXY(V,0,n)[1];ctx.moveTo(0,y);ctx.lineTo(w,y)}
     ctx.stroke();
@@ -401,17 +401,17 @@ const calc=(()=>{
     const cx=P.reduce((a,p)=>a+p[0],0)/(P.length||1),cy=P.reduce((a,p)=>a+p[1],0)/(P.length||1);
     P.forEach((p,i)=>{
       const act=i===hover||i===drag,r=act?8:5;
-      ctx.fillStyle=act?'#F2EFF7':'#23212C';ctx.strokeStyle=rgba(C.mint,1);ctx.lineWidth=2;ctx.beginPath();ctx.arc(p[0],p[1],r,0,6.283);ctx.fill();ctx.stroke();
+      ctx.fillStyle=act?'#EEF2F4':'#111C25';ctx.strokeStyle=rgba(C.mint,1);ctx.lineWidth=2;ctx.beginPath();ctx.arc(p[0],p[1],r,0,6.283);ctx.fill();ctx.stroke();
       const vx=p[0]-cx,vy=p[1]-cy,l=Math.hypot(vx,vy)||1;
-      ctx.fillStyle='rgba(242,239,247,.85)';ctx.font='500 11px "JetBrains Mono",monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle='rgba(238,242,244,.85)';ctx.font='500 11px "JetBrains Mono",monospace';ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText('V'+(i+1),p[0]+vx/l*20,p[1]+vy/l*20);ctx.textAlign='left';
     });
     /* escala gráfica */
-    const L=nice(80/V.s),px=L*V.s;ctx.strokeStyle='rgba(242,239,247,.8)';ctx.lineWidth=2;ctx.beginPath();
+    const L=nice(80/V.s),px=L*V.s;ctx.strokeStyle='rgba(238,242,244,.8)';ctx.lineWidth=2;ctx.beginPath();
     ctx.moveTo(16,h-18);ctx.lineTo(16+px,h-18);ctx.moveTo(16,h-23);ctx.lineTo(16,h-13);ctx.moveTo(16+px,h-23);ctx.lineTo(16+px,h-13);ctx.stroke();
-    ctx.fillStyle='rgba(242,239,247,.8)';ctx.font='500 11px "JetBrains Mono",monospace';ctx.textBaseline='alphabetic';ctx.fillText(fmt(L,0)+' m',16,h-28);
+    ctx.fillStyle='rgba(238,242,244,.8)';ctx.font='500 11px "JetBrains Mono",monospace';ctx.textBaseline='alphabetic';ctx.fillText(fmt(L,0)+' m',16,h-28);
     /* norte */
-    ctx.strokeStyle='rgba(242,239,247,.85)';ctx.fillStyle='rgba(242,239,247,.85)';ctx.lineWidth=1.6;
+    ctx.strokeStyle='rgba(238,242,244,.85)';ctx.fillStyle='rgba(238,242,244,.85)';ctx.lineWidth=1.6;
     ctx.beginPath();ctx.moveTo(w-26,52);ctx.lineTo(w-26,22);ctx.stroke();ctx.beginPath();ctx.moveTo(w-26,16);ctx.lineTo(w-31,26);ctx.lineTo(w-21,26);ctx.closePath();ctx.fill();
     ctx.textAlign='center';ctx.fillText('N',w-26,66);ctx.textAlign='left';
   }

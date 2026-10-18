@@ -1,13 +1,13 @@
 {
   "name": "GF Topografías Colombia",
   "short_name": "GF Topografías",
-  "description": "Topografía en Colombia: levantamientos, loteo y linderos, curvas de nivel, replanteo y dron.",
+  "description": "Topografía en Colombia: levantamientos, loteo y linderos, curvas de nivel, replanteo y fotogrametría.",
   "lang": "es-CO",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#15131B",
-  "theme_color": "#23212C",
+  "background_color": "#0F1A22",
+  "theme_color": "#0F1A22",
   "icons": [
     { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png" },
