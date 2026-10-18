@@ -1,0 +1,51 @@
+# =========================================================
+#  GF Topografías · Ajustes para hostings con Apache (cPanel)
+#  Si tu hosting no usa Apache (Netlify, GitHub Pages, etc.),
+#  este archivo simplemente se ignora.
+# =========================================================
+
+# Página propia para direcciones que no existen
+ErrorDocument 404 /404.html
+
+# No mostrar el listado de archivos de las carpetas
+Options -Indexes
+
+# Tipos de archivo
+AddType application/manifest+json .webmanifest
+AddType font/woff2 .woff2
+AddType image/svg+xml .svg
+
+# Forzar HTTPS: quita el # de las tres líneas cuando tu dominio tenga certificado SSL
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Compresión (la página carga más rápido)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript text/javascript application/json application/manifest+json image/svg+xml
+</IfModule>
+
+# Caché del navegador. Los estilos y scripts llevan ?v= en el HTML:
+# al cambiarlos, sube ese número para que los visitantes reciban la versión nueva.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+  ExpiresByType application/manifest+json "access plus 1 week"
+</IfModule>
+
+# Cabeceras de seguridad básicas
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>

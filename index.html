@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es-CO" data-theme="dark" data-motion="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GF Topografías Colombia | Topografía con dron y GPS RTK</title>
+<meta name="description" content="GF Topografías Colombia: levantamientos topográficos, loteo y linderos, curvas de nivel, volúmenes y replanteo con dron, estación total y GPS RTK en Colombia. Planos DWG en MAGNA-SIRGAS.">
+<!-- Dirección pública del sitio (GitHub Pages). Si un día usas dominio propio, cámbiala aquí, en og:url, og:image,
+     los datos estructurados, privacidad.html, robots.txt y sitemap.xml (ver LEEME.md) -->
+<link rel="canonical" href="https://eonxxx.github.io/GF-Topcol/">
+<meta name="theme-color" content="#23212C">
+<meta name="color-scheme" content="dark light">
+<meta name="format-detection" content="telephone=no">
+
+<!-- Vista previa al compartir (WhatsApp, Facebook, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta property="og:site_name" content="GF Topografías Colombia">
+<meta property="og:title" content="GF Topografías Colombia | Topografía real, del dron al plano">
+<meta property="og:description" content="Levantamientos, loteos y replanteo con dron, estación total y GPS RTK. Cotiza por WhatsApp.">
+<meta property="og:url" content="https://eonxxx.github.io/GF-Topcol/">
+<meta property="og:image" content="https://eonxxx.github.io/GF-Topcol/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo de GF Topografías Colombia sobre un paisaje de campo con curvas de nivel">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Íconos -->
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+
+<!-- Fuentes y estilos -->
+<link rel="preload" href="fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/styles.css?v=5">
+
+<!-- Configuración, tema y animación (antes de pintar la página, para que no parpadee) -->
+<script src="js/config.js?v=5"></script>
+<script>
+(function(){
+  var d=document.documentElement,c=typeof CONFIG!=='undefined'?CONFIG:{},t=null,m=null;
+  d.classList.add('js');
+  try{t=localStorage.getItem('gf-theme');m=localStorage.getItem('gf-motion')}catch(e){}
+  if(t!=='light'&&t!=='dark'){var p=c.temaInicial||'oscuro';t=p==='claro'?'light':p==='sistema'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):'dark'}
+  if(m!=='on'&&m!=='off'){m=(c.animacion===false||(c.respetarReducirMovimiento&&matchMedia('(prefers-reduced-motion: reduce)').matches))?'off':'on'}
+  d.setAttribute('data-theme',t);d.setAttribute('data-motion',m);
+  /* Si abres el archivo directamente (sin servidor), el navegador bloquea las fuentes locales: se usan las de Google Fonts */
+  if(location.protocol==='file:'){var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:wght@300..900&family=JetBrains+Mono:wght@100..800&display=swap';document.head.appendChild(l)}
+})();
+</script>
+<script src="js/nucleo.js?v=5" defer></script>
+<script src="js/fondo.js?v=5" defer></script>
+<script src="js/paisajes.js?v=5" defer></script>
+<script src="js/main.js?v=5" defer></script>
+
+<!-- Datos estructurados para buscadores -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "GF Topografías Colombia",
+  "description": "Levantamientos topográficos, loteo y linderos, curvas de nivel y volúmenes, replanteo de obra y levantamientos con dron en Colombia.",
+  "url": "https://eonxxx.github.io/GF-Topcol/",
+  "image": "https://eonxxx.github.io/GF-Topcol/img/og-image.jpg",
+  "logo": "https://eonxxx.github.io/GF-Topcol/img/logo.png",
+  "telephone": "+57 320 416 4329",
+  "address": {"@type": "PostalAddress", "addressCountry": "CO"},
+  "areaServed": {"@type": "Country", "name": "Colombia"},
+  "knowsAbout": ["Topografía", "Levantamiento topográfico", "Loteo y linderos", "Curvas de nivel", "Replanteo de obra", "Levantamiento con dron", "GPS RTK", "MAGNA-SIRGAS"]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<div id="progress" aria-hidden="true"></div>
+<canvas id="topo" aria-hidden="true"></canvas>
+
+<!-- ENCABEZADO -->
+<header class="hdr">
+  <div class="nav">
+    <span class="pill" aria-hidden="true"></span>
+    <a class="brand" href="#inicio" aria-label="GF Topografías Colombia: ir al inicio">
+      <img class="lg lg-oscuro" src="img/logo-horizontal-blanco.svg" alt="" width="310" height="56">
+      <img class="lg lg-claro" src="img/logo-horizontal.svg" alt="" width="310" height="56">
+    </a>
+
+    <nav class="links" aria-label="Principal">
+      <div class="dd" data-dd="serv">
+        <button class="lk" type="button" data-sec="servicios" aria-expanded="false" aria-controls="ddServ">Servicios<svg class="ico chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="mega" id="ddServ" hidden>
+          <div class="mega-in">
+            <div>
+              <p class="mega-h">Qué hacemos <a href="#servicios">Ver la sección →</a></p>
+              <div class="mega-list" id="megaServ"></div>
+            </div>
+            <aside class="mega-side">
+              <h4>¿No sabes cuál necesitas?</h4>
+              <p>Cuéntanos qué vas a hacer con el terreno y te decimos qué trabajo te sirve.</p>
+              <a class="lnk" href="#calculadora">Calcular el área de mi lote →</a>
+              <a class="btn primary sm" href="#" data-wa="Hola, no sé qué servicio de topografía necesito. ¿Me ayudan?">Pregúntanos por WhatsApp</a>
+            </aside>
+          </div>
+        </div>
+      </div>
+      <div class="dd" data-dd="trab">
+        <button class="lk" type="button" data-sec="trabajos" aria-expanded="false" aria-controls="ddTrab">Trabajos<svg class="ico chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="mega" id="ddTrab" hidden>
+          <p class="mega-h">Ocho tipos de trabajo, por categoría <a href="#trabajos">Ver todos →</a></p>
+          <div class="mega-cols" id="megaTrab"></div>
+        </div>
+      </div>
+      <a class="lk" href="#calculadora" data-sec="calculadora">Calcular área</a>
+      <a class="lk" href="#campo" data-sec="campo">Equipos</a>
+      <a class="lk" href="#proceso" data-sec="proceso">Cómo trabajamos</a>
+      <a class="lk" href="#faq" data-sec="faq">Preguntas</a>
+    </nav>
+
+    <div class="tgls">
+      <button class="sw" type="button" role="switch" data-switch="theme" aria-checked="true" aria-label="Modo oscuro" data-tip="Modo oscuro">
+        <span class="sw-track">
+          <svg class="ico ico-off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="ico ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <span class="sw-knob">
+            <svg class="ico k-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            <svg class="ico k-off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          </span>
+        </span>
+      </button>
+      <button class="sw sw-motion" type="button" role="switch" data-switch="motion" aria-checked="true" aria-label="Animación del fondo" data-tip="Animación">
+        <span class="sw-track">
+          <svg class="ico ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+          <svg class="ico ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1M2 15c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1"/></svg>
+          <span class="sw-knob">
+            <svg class="ico k-on sw-wave" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1M2 15c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1"/></svg>
+            <svg class="ico k-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+          </span>
+        </span>
+      </button>
+    </div>
+    <a class="btn primary sm cta" href="#cotizar">Cotizar</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- MENÚ MÓVIL -->
+<div class="mnav" id="mnav" hidden>
+  <div class="mnav-bg" data-close></div>
+  <div class="mnav-in" role="dialog" aria-modal="true" aria-label="Menú del sitio">
+    <div class="mnav-wrap">
+      <nav aria-label="Secciones">
+        <ol class="mlist">
+          <li>
+            <div class="mrow"><a href="#servicios" data-sec="servicios"><i>01</i><b>Servicios</b><small>Qué hacemos y con qué equipos</small></a>
+              <button class="mexp" type="button" aria-expanded="false" aria-controls="mSubServ" aria-label="Ver los servicios"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+            <ul class="msub" id="mSubServ" hidden></ul>
+          </li>
+          <li>
+            <div class="mrow"><a href="#trabajos" data-sec="trabajos"><i>02</i><b>Trabajos</b><small>Ejemplos por tipo de terreno y obra</small></a>
+              <button class="mexp" type="button" aria-expanded="false" aria-controls="mSubTrab" aria-label="Ver los tipos de trabajo"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+            <ul class="msub" id="mSubTrab" hidden></ul>
+          </li>
+          <li><div class="mrow"><a href="#calculadora" data-sec="calculadora"><i>03</i><b>Calcular área</b><small>Herramienta gratis con tus coordenadas</small></a></div></li>
+          <li><div class="mrow"><a href="#campo" data-sec="campo"><i>04</i><b>Equipos</b><small>Dron, estación total y GPS RTK</small></a></div></li>
+          <li><div class="mrow"><a href="#proceso" data-sec="proceso"><i>05</i><b>Cómo trabajamos</b><small>Cuatro pasos, del alcance a la entrega</small></a></div></li>
+          <li><div class="mrow"><a href="#faq" data-sec="faq"><i>06</i><b>Preguntas</b><small>Precios, plazos, zonas y entregables</small></a></div></li>
+        </ol>
+      </nav>
+      <div class="mset">
+        <span class="mset-t">Ajustes</span>
+        <button class="sw sw-row" type="button" role="switch" data-switch="theme" aria-checked="true" aria-labelledby="lbTheme" aria-describedby="stTheme">
+          <span><b id="lbTheme">Modo oscuro</b><small id="stTheme" data-state="theme">Activado</small></span>
+          <span class="sw-track">
+            <svg class="ico ico-off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="ico ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            <span class="sw-knob">
+              <svg class="ico k-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+              <svg class="ico k-off" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            </span>
+          </span>
+        </button>
+        <button class="sw sw-row" type="button" role="switch" data-switch="motion" aria-checked="true" aria-labelledby="lbMotion" aria-describedby="stMotion">
+          <span><b id="lbMotion">Animación del fondo</b><small id="stMotion" data-state="motion">Las curvas y los paisajes se mueven</small></span>
+          <span class="sw-track">
+            <svg class="ico ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+            <svg class="ico ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1M2 15c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1"/></svg>
+            <span class="sw-knob">
+              <svg class="ico k-on sw-wave" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1M2 15c2.5-3 5-3 7.5 0s5 3 7.5 0 3.5-2 5-1"/></svg>
+              <svg class="ico k-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+            </span>
+          </span>
+        </button>
+      </div>
+      <div class="mcta">
+        <a class="btn primary" href="#" data-wa="Hola, quiero cotizar un trabajo de topografía."><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>Cotizar por WhatsApp</a>
+        <a class="btn" href="#" data-tel data-keep><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Llamar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- INICIO -->
+  <section class="hero" id="inicio" aria-label="Inicio">
+    <canvas id="heroScape" aria-hidden="true"></canvas>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="wrap hero-in">
+      <p class="eyebrow reveal"><span class="dot"></span>Topografía real · Colombia</p>
+      <h1 class="reveal" style="--d:.08s">Medimos el terreno.<br><span class="grad">Tú decides con certeza.</span></h1>
+      <p class="sub reveal" style="--d:.16s">Levantamientos, loteos y replanteo con dron, estación total y GPS RTK. Planos DWG georreferenciados, listos para curaduría y obra.</p>
+      <div class="hero-actions reveal" style="--d:.24s">
+        <a class="btn primary" href="#cotizar">Solicitar cotización</a>
+        <a class="btn" href="#calculadora">Calcular el área de mi lote</a>
+      </div>
+      <div class="hero-stats glass reveal" style="--d:.32s">
+        <div><b data-count="3">3</b><span>equipos: dron, estación total y GPS RTK</span></div>
+        <div><b>Colombia</b><span>predios rurales y urbanos</span></div>
+        <div><b>DWG</b><span>planos en MAGNA-SIRGAS</span></div>
+      </div>
+    </div>
+    <div class="readout" id="readout" aria-hidden="true"></div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="eyebrow"><span class="dot"></span>Servicios</p>
+        <h2>Un servicio para cada etapa del proyecto.</h2>
+        <p class="lead">Elige uno y míralo en acción: cada animación muestra cómo trabajamos en campo.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-list reveal" role="tablist" aria-label="Servicios" id="svcList"></div>
+        <article class="svc-card glass reveal" style="--d:.1s">
+          <div class="cv-wrap">
+            <canvas class="cv svc-cv" id="svcCanvas" aria-hidden="true"></canvas>
+            <button class="ib cv-ib" id="svcReplay" type="button" aria-label="Repetir la animación" data-tip="Repetir"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5"/></svg></button>
+          </div>
+          <div class="svc-extra" id="svcExtra"></div>
+          <h3 id="svcTitle"></h3>
+          <p class="svc-desc" id="svcDesc"></p>
+          <div class="specs">
+            <div><small>Equipos</small><span id="svcEq"></span></div>
+            <div><small>Plazo</small><span id="svcPlazo"></span></div>
+          </div>
+          <ul class="deliver" id="svcDeliver"></ul>
+          <div class="svc-actions">
+            <button class="btn primary" id="svcQuote" type="button">Cotizar este servicio</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRABAJOS -->
+  <section id="trabajos" style="padding-top:20px">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="eyebrow"><span class="dot"></span>Trabajos</p>
+        <h2>Lo que medimos en campo.</h2>
+        <p class="lead">De la finca a la obra: ocho tipos de trabajo, cada uno con su paisaje. Toca uno para ver qué entregamos.</p>
+        <div class="chips" id="projChips" style="justify-content:center;margin-top:22px">
+          <button class="chip" type="button" aria-pressed="true" data-f="todos">Todos</button>
+          <button class="chip" type="button" aria-pressed="false" data-f="predios">Predios</button>
+          <button class="chip" type="button" aria-pressed="false" data-f="obra">Obra</button>
+          <button class="chip" type="button" aria-pressed="false" data-f="modelos">Dron y modelos</button>
+        </div>
+      </div>
+      <div class="proj" id="projGrid"></div>
+      <p class="foot-note">Ilustraciones animadas de referencia. ¿Quieres ver trabajos reales? <a href="#" data-wa="Hola, quiero ver ejemplos de trabajos realizados.">Pídelos por WhatsApp</a>.</p>
+    </div>
+  </section>
+
+  <dialog id="pdlg" aria-labelledby="pdTitle">
+    <div class="d-in">
+      <div class="d-top"><small class="muted" id="pdTag"></small><button class="ib" type="button" id="pdClose" aria-label="Cerrar" data-tip="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <canvas class="cv" id="pdCanvas" aria-hidden="true"></canvas>
+      <h3 id="pdTitle"></h3>
+      <p class="muted" id="pdText"></p>
+      <ul id="pdList"></ul>
+      <div class="btn-row" style="margin-top:4px"><button class="btn primary" type="button" id="pdQuote">Cotizar este trabajo</button></div>
+    </div>
+  </dialog>
+
+  <!-- CALCULADORA -->
+  <section id="calculadora" style="padding-top:20px">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="eyebrow"><span class="dot"></span>Herramienta gratuita</p>
+        <h2>Calcula el área de tu lote.</h2>
+        <p class="lead">Escribe las coordenadas de los vértices, pégalas desde una lista o arrastra los puntos sobre el plano.</p>
+      </div>
+      <div class="calc">
+        <div class="panel glass reveal">
+          <div class="panel-head"><h3>Vértices</h3><span class="muted small">Coordenadas planas en metros</span></div>
+          <div class="vhead"><span>#</span><span>Este (m)</span><span>Norte (m)</span><span></span></div>
+          <div id="vtx"></div>
+          <div class="lnk-row">
+            <button class="lnk" id="vAdd" type="button">+ Vértice</button>
+            <button class="lnk" id="vExample" type="button">Cargar ejemplo</button>
+            <button class="lnk" id="vClear" type="button">Limpiar</button>
+          </div>
+          <details class="import">
+            <summary>Pegar lista de coordenadas</summary>
+            <textarea id="vPaste" rows="5" aria-label="Lista de coordenadas" placeholder="Una línea por vértice: Este Norte&#10;1000.00 1000.00&#10;1048.40 1008.20&#10;1052.90 1052.75"></textarea>
+            <button class="lnk" id="vImport" type="button">Importar vértices</button>
+          </details>
+        </div>
+        <div class="panel glass reveal" style="--d:.1s">
+          <canvas class="cv calc-cv" id="calcCanvas" aria-label="Plano del lote con sus vértices"></canvas>
+          <p class="hint" id="calcHint">Arrastra los vértices del plano para moverlos. En el celular, edita las coordenadas en la lista.</p>
+          <div class="res-grid">
+            <div class="res"><small>Área</small><b><span id="rM2">0</span></b> <small style="display:inline">m²</small></div>
+            <div class="res"><small>Hectáreas</small><b id="rHa">0</b></div>
+            <div class="res"><small>Fanegadas (6 400 m²)</small><b id="rFan">0</b></div>
+            <div class="res"><small>Perímetro</small><b><span id="rPer">0</span></b> <small style="display:inline">m</small></div>
+          </div>
+          <div id="calcWarn" role="status" aria-live="polite"></div>
+          <table class="sides">
+            <thead><tr><th>Lado</th><th>Distancia (m)</th><th>Azimut</th></tr></thead>
+            <tbody id="sidesBody"></tbody>
+          </table>
+          <div class="act-row">
+            <button class="lnk" id="cCopy" type="button"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>Copiar</button>
+            <button class="lnk" id="cCsv" type="button"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>CSV</button>
+            <button class="btn primary sm" id="cQuote" type="button">Cotizar este levantamiento</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPOS -->
+  <section id="campo" style="padding-top:20px">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="eyebrow"><span class="dot"></span>Del campo a la oficina</p>
+        <h2>Sin perder un solo punto.</h2>
+        <p class="lead">Equipos de medición directa y procesamiento en software de ingeniería.</p>
+      </div>
+      <div class="bento">
+        <article class="tile w3 glass reveal">
+          <div class="tag">Equipos</div>
+          <h3>Tecnología de alta precisión</h3>
+          <p>Elegimos el equipo según el terreno y lo que necesitas medir. Toca uno para ver para qué lo usamos.</p>
+          <div class="equip" id="equip">
+            <button class="eq" type="button" aria-expanded="true"><span class="eq-h"><b>Estación total</b><i>Poligonales y replanteo</i></span><span class="eq-d">Mide ángulos y distancias para levantamientos de detalle, loteos y replanteo de obra.</span></button>
+            <button class="eq" type="button" aria-expanded="false"><span class="eq-h"><b>GPS RTK</b><i>Control y levantamientos</i></span><span class="eq-d">Da coordenadas con corrección en tiempo real: rápido para fincas y predios grandes y para amarrar el proyecto a un sistema de coordenadas.</span></button>
+            <button class="eq" type="button" aria-expanded="false"><span class="eq-h"><b>Dron</b><i>Ortofoto y modelo 3D</i></span><span class="eq-d">Cubre áreas grandes o de difícil acceso y genera ortofoto, modelo 3D y curvas de nivel.</span></button>
+          </div>
+          <canvas class="eq-scape" id="eqScape" aria-hidden="true"></canvas>
+        </article>
+
+        <article class="tile w3 glass reveal" style="--d:.08s">
+          <div class="tag">Procesamiento</div>
+          <h3>De nube de puntos a plano</h3>
+          <p>Arrastra para comparar los datos crudos con el plano de curvas de nivel generado.</p>
+          <div class="compare" id="compare">
+            <canvas id="cmpBottom"></canvas>
+            <canvas id="cmpTop"></canvas>
+            <span class="lbl l">Curvas de nivel</span><span class="lbl r">Puntos medidos</span>
+            <div class="bar" id="cmpBar"></div><div class="knob">&#8596;</div>
+            <input type="range" min="0" max="100" value="50" id="cmpRange" aria-label="Comparar curvas de nivel y puntos medidos">
+          </div>
+          <label class="sl cmp-ctl"><span>Puntos</span><input type="range" id="cmpDens" min="6" max="22" value="10" aria-label="Separación entre puntos medidos"></label>
+        </article>
+
+        <article class="tile w4 glass reveal">
+          <div class="tag">Sistemas de referencia</div>
+          <h3>Tus coordenadas, en el sistema que necesites</h3>
+          <p>Elige uno para ver de qué se trata.</p>
+          <div class="chips" id="refChips">
+            <button class="chip" type="button" aria-pressed="true" data-k="magna">MAGNA-SIRGAS</button>
+            <button class="chip" type="button" aria-pressed="false" data-k="origen">Origen Nacional</button>
+            <button class="chip" type="button" aria-pressed="false" data-k="local">Origen local</button>
+            <button class="chip" type="button" aria-pressed="false" data-k="cotas">Cotas</button>
+          </div>
+          <p id="refInfo" aria-live="polite"></p>
+        </article>
+
+        <article class="tile w2 glass reveal" style="--d:.08s">
+          <div class="tag">Entregables</div>
+          <h3>Planos DWG</h3>
+          <p>Georreferenciados en MAGNA-SIRGAS y listos para curaduría y obra.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section id="proceso" style="padding-top:20px">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="eyebrow"><span class="dot"></span>Proceso</p>
+        <h2>Cómo trabajamos.</h2>
+        <p class="lead">Cuatro pasos, claros desde el primer día. Toca cada uno para ver qué necesitamos de ti.</p>
+      </div>
+      <div class="steps reveal" id="steps">
+        <div class="bar"></div>
+        <button class="step glass" type="button" aria-expanded="true"><span class="node">1</span><h3>Alcance</h3><span class="t">Revisamos el predio, los documentos y lo que necesitas medir.</span><span class="more"><b>Tú:</b> ubicación, escritura o folio y plano previo si existe.<br><b>Recibes:</b> cotización y plazo.</span></button>
+        <button class="step glass" type="button" aria-expanded="false"><span class="node">2</span><h3>Campo</h3><span class="t">Amarramos a puntos de control y levantamos el terreno.</span><span class="more"><b>Tú:</b> acceso al predio y un contacto en sitio.<br><b>Recibes:</b> aviso de fecha y hora de la visita.</span></button>
+        <button class="step glass" type="button" aria-expanded="false"><span class="node">3</span><h3>Procesamiento</h3><span class="t">Ajustamos las medidas, generamos la superficie y dibujamos.</span><span class="more"><b>Tú:</b> estar disponible por si surge una duda.<br><b>Recibes:</b> revisión del cierre y ajuste de coordenadas.</span></button>
+        <button class="step glass" type="button" aria-expanded="false"><span class="node">4</span><h3>Entrega</h3><span class="t">Planos DWG y archivos digitales listos para curaduría y obra.</span><span class="more"><b>Tú:</b> revisas y nos cuentas si falta algo.<br><b>Recibes:</b> planos y archivos digitales.</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROL DE CALIDAD -->
+  <section class="quality" id="calidad">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="eyebrow"><span class="dot"></span>Control de calidad</p>
+        <h2>Así se verifica una medición.</h2>
+        <p class="lead">Un levantamiento se comprueba con números. Simula el cierre de una poligonal y mira cuándo una medición cumple la tolerancia.</p>
+      </div>
+      <div class="q-grid">
+        <div class="reveal">
+          <h3>¿Qué es el cierre de una poligonal?</h3>
+          <p>Es la comprobación básica de una medición: al recorrer los puntos de control y volver al inicio, los números deben coincidir.</p>
+          <ul>
+            <li><strong>Cierre angular:</strong> la suma de los ángulos medidos se compara con la suma teórica; la diferencia es el error angular.</li>
+            <li><strong>Cierre lineal:</strong> al volver al punto de partida, la poligonal debe cerrar; el error se compara con el perímetro.</li>
+            <li><strong>Tolerancia:</strong> si el error la supera, la medición se repite.</li>
+          </ul>
+        </div>
+        <div class="code reveal" style="--d:.1s" id="codeBox">
+          <div class="file">cierre_poligonal.txt · simulación
+            <div>
+              <button class="ib" id="qSim" type="button" aria-label="Simular otro cierre" data-tip="Simular otro"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5"/></svg></button>
+              <button class="ib" id="qCopy" type="button" aria-label="Copiar el informe" data-tip="Copiar"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button>
+            </div>
+          </div>
+          <pre id="report" aria-live="polite"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES -->
+  <section id="faq" style="padding-top:20px">
+    <div class="wrap">
+      <div class="center reveal">
+        <p class="eyebrow"><span class="dot"></span>Preguntas frecuentes</p>
+        <h2>Lo que más nos preguntan.</h2>
+      </div>
+      <div class="faq" id="faqList">
+        <div class="q reveal"><button type="button" aria-expanded="false">¿Qué necesito para pedir una cotización?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>La ubicación del predio (municipio y vereda o barrio), el área aproximada y para qué necesitas el trabajo. Si tienes escritura, folio de matrícula o un plano anterior, mejor.</p></div></div></div>
+        <div class="q reveal"><button type="button" aria-expanded="false">¿Cuánto cuesta un levantamiento?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Depende del área, el acceso, la vegetación y los entregables. Por eso cotizamos cada trabajo; completa el formulario y te respondemos con un valor y un plazo.</p></div></div></div>
+        <div class="q reveal"><button type="button" aria-expanded="false">¿En qué sistema de coordenadas entregan?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>En MAGNA-SIRGAS (Origen Nacional, EPSG:9377) o en el sistema que pida tu proyecto o la entidad que lo revisa.</p></div></div></div>
+        <div class="q reveal"><button type="button" aria-expanded="false">¿Cuánto tarda la entrega?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Depende del área, el acceso y el tipo de trabajo. Te damos el plazo en la cotización, antes de salir a campo.</p></div></div></div>
+        <div class="q reveal"><button type="button" aria-expanded="false">¿Los planos sirven para licencias o escrituras?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Entregamos planos DWG georreferenciados, listos para curaduría y obra. Cuéntanos el trámite y confirmamos qué debe incluir el plano antes de salir a campo.</p></div></div></div>
+        <div class="q reveal"><button type="button" aria-expanded="false">¿En qué zonas trabajan?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Trabajamos en Colombia, incluidas fincas y zonas rurales de difícil acceso. Escríbenos con la ubicación de tu predio y te confirmamos si podemos atenderlo y en qué plazo.</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANORAMA -->
+  <section class="pano" id="llano" aria-label="Paisaje de campo">
+    <canvas id="panoCanvas" aria-hidden="true"></canvas>
+    <div class="wrap pano-in">
+      <p class="eyebrow reveal"><span class="dot"></span>Trabajo de campo</p>
+      <h2 class="reveal" style="--d:.08s">Del dron al plano,<br><span class="grad">hecho en Colombia.</span></h2>
+      <div class="btn-row reveal" style="--d:.16s"><a class="btn primary" href="#cotizar">Cotizar mi terreno</a></div>
+    </div>
+  </section>
+
+  <!-- COTIZACIÓN -->
+  <section id="cotizar" style="padding-top:20px">
+    <div class="wrap contact">
+      <div class="reveal">
+        <p class="eyebrow"><span class="dot"></span>Cotización</p>
+        <h2>Cuéntanos qué vas a medir.</h2>
+        <p class="lead">Con estos datos te respondemos con una cotización y un plazo. Así se verá tu mensaje:</p>
+        <pre class="preview" id="preview" aria-live="polite"></pre>
+      </div>
+      <form class="panel glass reveal" id="quoteForm" style="--d:.1s" novalidate>
+        <div class="two">
+          <label>Nombre<input name="nombre" id="fNombre" autocomplete="name" required><em class="err" id="eNombre"></em></label>
+          <label>Celular<input name="tel" id="fTel" type="tel" inputmode="tel" autocomplete="tel" placeholder="300 123 4567" required><em class="err" id="eTel"></em></label>
+        </div>
+        <label>Ubicación del predio<input name="lugar" id="fLugar" placeholder="Municipio y vereda o barrio" autocomplete="off" required><em class="err" id="eLugar"></em></label>
+        <div class="two">
+          <label>Servicio<select name="servicio" id="fServicio"></select></label>
+          <label>Área aproximada
+            <span class="inline"><input name="area" id="fArea" inputmode="decimal" placeholder="2500"><select name="unidad" id="fUnidad" aria-label="Unidad del área"><option>m²</option><option>ha</option><option>fanegadas</option></select></span>
+          </label>
+        </div>
+        <fieldset>
+          <legend>Urgencia</legend>
+          <div class="seg">
+            <label><input type="radio" name="urg" value="Normal" checked><span>Normal</span></label>
+            <label><input type="radio" name="urg" value="Prioritaria"><span>Prioritaria</span></label>
+            <label><input type="radio" name="urg" value="Solo cotizar"><span>Solo estoy cotizando</span></label>
+          </div>
+        </fieldset>
+        <label>Detalles<textarea name="msg" id="fMsg" rows="3" placeholder="Para qué lo necesitas, plazo deseado…"></textarea></label>
+        <fieldset data-mailopt hidden>
+          <legend>¿Cómo prefieres que te respondamos?</legend>
+          <div class="seg">
+            <label><input type="radio" name="via" value="wa" checked><span>WhatsApp</span></label>
+            <label><input type="radio" name="via" value="mail"><span>Correo</span></label>
+          </div>
+        </fieldset>
+        <div class="btn-row" style="margin-top:4px">
+          <button class="btn primary" type="submit" id="sendBtn">Enviar solicitud</button>
+          <button class="lnk" type="button" id="fCopy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>Copiar mensaje</button>
+        </div>
+        <p class="priv">Tus datos solo se usan para responder esta solicitud. <a href="privacidad.html">Tratamiento de datos</a></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- PIE DE PÁGINA -->
+<footer>
+  <canvas id="nightCanvas" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="f-logo" href="#inicio" aria-label="GF Topografías Colombia: ir al inicio"><img class="lg-oscuro" src="img/logo-blanco.svg" alt="" width="210" height="148"><img class="lg-claro" src="img/logo.svg" alt="" width="210" height="148"></a>
+        <p>Topografía de precisión, reimaginada. Profesional. Rápida. Tuya.</p>
+      </div>
+      <div>
+        <h4>Secciones</h4>
+        <a href="#servicios">Servicios</a><a href="#trabajos">Trabajos</a><a href="#calculadora">Calcular área</a><a href="#proceso">Cómo trabajamos</a><a href="#faq">Preguntas</a>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <a href="#" data-tel>+57 320 416 4329</a>
+        <a href="#" data-mail hidden>correo</a>
+        <a href="#" data-wa="Hola, quiero información sobre sus servicios de topografía.">Escríbenos por WhatsApp</a>
+        <p data-city>Colombia</p>
+      </div>
+    </div>
+    <div class="f-bottom"><span>&copy; 2025 – <span data-year>2026</span> <span data-brand>GF Topografías Colombia</span>. Todos los derechos reservados.</span><span><a href="privacidad.html">Tratamiento de datos</a> · Colombia</span></div>
+  </div>
+</footer>
+
+<div class="fab">
+  <button id="toTop" type="button" aria-label="Volver arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <a id="fabWa" href="#" data-wa="Hola, quiero información sobre sus servicios de topografía." aria-label="Escribir por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg></a>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

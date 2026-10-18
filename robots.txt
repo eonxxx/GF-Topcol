@@ -1,0 +1,6 @@
+# Permite que los buscadores lean todo el sitio
+User-agent: *
+Allow: /
+
+# Mapa del sitio (si un día usas dominio propio, cambia esta dirección)
+Sitemap: https://eonxxx.github.io/GF-Topcol/sitemap.xml
