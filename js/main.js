@@ -25,19 +25,19 @@ const svg=(k,c)=>'<svg class="ico'+(c?' '+c:'')+'" viewBox="0 0 24 24" aria-hidd
 const PLAZO='Según el área y el acceso; lo confirmamos al cotizar';
 const SERVICES=[
   {key:'lev',name:'Levantamiento topográfico',short:'Fincas, lotes y obras',
-   desc:'Medimos linderos, construcciones, vías y cotas con estación total y GNSS RTK para que tengas el estado real del terreno.',
+   desc:'Medimos linderos, construcciones, vías y cotas para que tengas el estado real del terreno.',
    eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Plano topográfico DWG','Georreferenciado en MAGNA-SIRGAS','Puntos XYZ']},
   {key:'lin',name:'Loteo y linderos',short:'División de predios y mojones',
-   desc:'Dividimos el terreno en lotes, ubicamos los linderos y los marcamos en campo con mojones.',
+   desc:'Dividimos el terreno en lotes y ubicamos los linderos.',
    eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Plano de loteo','Cuadro de áreas y coordenadas','Mojones en campo']},
   {key:'vol',name:'Curvas de nivel y volúmenes',short:'Modelo 3D, cortes y llenos',
-   desc:'Generamos el modelo del terreno con sus curvas de nivel y calculamos cortes, llenos y volúmenes. Mueve la cota de proyecto y mira cómo cambian.',
+   desc:'Modelamos el terreno y calculamos cortes y llenos. Mueve la cota de proyecto y mira cómo cambian.',
    eq:'GNSS RTK · Estación total · Dron',plazo:PLAZO,out:['Curvas de nivel','Modelo 3D','Perfiles y secciones','Cálculo de volúmenes']},
   {key:'rep',name:'Replanteo de obra',short:'Del plano al terreno',
-   desc:'Llevamos al terreno los ejes, esquinas y niveles de tu diseño: urbanismo, vías y edificaciones.',
+   desc:'Llevamos tu diseño al terreno: urbanismo, vías y edificaciones.',
    eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Estacado de ejes','Esquinas y niveles','Cartera de replanteo']},
   {key:'dro',name:'Fotogrametría',short:'Áreas grandes o de difícil acceso',
-   desc:'Con vuelos de dron cubrimos grandes extensiones en poco tiempo y generamos ortomosaico, modelo 3D y curvas de nivel.',
+   desc:'Con vuelos de dron cubrimos grandes extensiones en poco tiempo.',
    eq:'Dron · GNSS RTK',plazo:PLAZO,out:['Ortomosaico','Modelo 3D','Curvas de nivel','Cálculo de volúmenes']}
 ];
 const PROJECTS=[
@@ -48,7 +48,7 @@ const PROJECTS=[
   {id:'p5',tipo:'modelos',scene:'curvas',pal:'night',seed:11,svc:'Curvas de nivel y volúmenes',tag:'Curvas de nivel',title:'Relieve en curvas de nivel',text:'Modelo digital del terreno con curvas a la equidistancia que necesites.',list:['Servicio: curvas de nivel y modelo 3D','Entregables: curvas en DWG, modelo del terreno y perfiles']},
   {id:'p6',tipo:'obra',scene:'vol',pal:'day',seed:13,svc:'Curvas de nivel y volúmenes',tag:'Movimiento de tierras',title:'Cortes, llenos y volúmenes',text:'Volúmenes calculados sobre el terreno real, antes y después de la obra.',list:['Servicio: curvas de nivel y volúmenes','Entregables: secciones, cuadro de volúmenes y plano de cortes y llenos']},
   {id:'p7',tipo:'predios',scene:'catastro',pal:'dawn',seed:15,svc:'Loteo y linderos',tag:'Planos de predio',title:'Plano con coordenadas',text:'Predio dibujado con sus linderos, vértices, áreas y colindantes.',list:['Servicio: levantamiento y linderos','Entregables: plano georreferenciado en MAGNA-SIRGAS y cuadro de coordenadas']},
-  {id:'p8',tipo:'obra',scene:'replanteo',pal:'dawn',seed:17,svc:'Replanteo de obra',tag:'Replanteo',title:'Del plano al terreno',text:'Ejes, esquinas y niveles de tu diseño marcados en campo.',list:['Servicio: replanteo de obra','Entregables: estacado de ejes y esquinas, y cartera de replanteo']}
+  {id:'p8',tipo:'obra',scene:'replanteo',pal:'dawn',seed:17,svc:'Replanteo de obra',tag:'Replanteo',title:'Estacado de obra',text:'Estacas en cada eje y esquina, con niveles verificados.',list:['Servicio: replanteo de obra','Entregables: estacado de ejes y esquinas, y cartera de replanteo']}
 ];
 const CATS=[
   {k:'predios',name:'Predios',desc:'Fincas, lotes y planos'},
@@ -272,7 +272,7 @@ const svc=(()=>{
     idx=i;const s=SERVICES[i];
     $$('.svc-item',list).forEach((b,j)=>{b.setAttribute('aria-selected',String(j===i));b.tabIndex=j===i?0:-1});
     $('#svcTitle').textContent=s.name;$('#svcDesc').textContent=s.desc;
-    $('#svcEq').textContent=s.eq;$('#svcPlazo').textContent=s.plazo;
+    $('#svcEq').textContent=s.eq;
     $('#svcDeliver').innerHTML=s.out.map(o=>'<li>'+o+'</li>').join('');
     buildExtra();t0=performance.now();dirty=true;cache={};render(t0);
     if(focus)$$('.svc-item',list)[i].focus();
@@ -484,7 +484,7 @@ const calc=(()=>{
 })();
 
 /* =========================================================
-   COMPARADOR, EQUIPOS, SISTEMAS DE REFERENCIA Y PROCESO
+   COMPARADOR, EQUIPOS Y PROCESO
    ========================================================= */
 const compare=(()=>{
   const bot=$('#cmpBottom'),top=$('#cmpTop'),rng=$('#cmpRange'),bar=$('#cmpBar'),dens=$('#cmpDens'),f=makeTerrain(21);
@@ -513,44 +513,8 @@ const compare=(()=>{
 (()=>{
   const eqs=$$('.eq');
   eqs.forEach(b=>b.addEventListener('click',()=>{const o=b.getAttribute('aria-expanded')==='true';eqs.forEach(x=>x.setAttribute('aria-expanded','false'));b.setAttribute('aria-expanded',String(!o))}));
-  const INFO={
-    magna:'MAGNA-SIRGAS es el sistema de referencia geocéntrico oficial de Colombia, la base de la cartografía del país.',
-    origen:'El Origen Nacional (EPSG:9377) es una proyección plana única para todo el país, pensada para cartografía y proyectos de ingeniería.',
-    local:'Un origen local ajusta el plano y el factor de escala al predio. Es útil para obra y replanteo, donde importan las distancias reales de terreno.',
-    cotas:'Las cotas son alturas sobre el nivel del mar. Se obtienen por nivelación o con un modelo geoidal, y no deben confundirse con las alturas elipsoidales del GNSS.'
-  };
-  const chips=$$('#refChips .chip'),info=$('#refInfo');
-  function pick(k){chips.forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.k===k)));info.textContent=INFO[k]}
-  chips.forEach(c=>c.addEventListener('click',()=>pick(c.dataset.k)));
-  pick('magna');
   const steps=$$('.step');
   steps.forEach(b=>b.addEventListener('click',()=>{const o=b.getAttribute('aria-expanded')==='true';steps.forEach(x=>x.setAttribute('aria-expanded','false'));b.setAttribute('aria-expanded',String(!o))}));
-})();
-
-/* =========================================================
-   INFORME DE CIERRE (máquina de escribir + simulador)
-   ========================================================= */
-(()=>{
-  const pre=$('#report');let timer=null,current='',started=false;
-  const dms=s=>'00°'+String(Math.floor(s/60)).padStart(2,'0')+"'"+String(s%60).padStart(2,'0')+'"';
-  function build(){
-    const nV=6,per=842.350,ang=Math.round(8+Math.random()*22),tol=Math.round(10*Math.sqrt(nV)),lin=+(.006+Math.random()*.011).toFixed(3),prec=Math.round(per/lin);
-    const ok=ang<=tol,res=ok?'CUMPLE':'REPETIR MEDICIÓN';
-    const lines=['; Poligonal cerrada - '+nV+' vértices','Error angular   : '+dms(ang),'Tolerancia      : '+dms(tol),'Error lineal    : '+lin.toFixed(3)+' m','Perímetro       : '+per.toFixed(3)+' m','Precisión       : 1 : '+String(prec).replace(/\B(?=(\d{3})+(?!\d))/g,' '),'Resultado       : '+res];
-    return{lines,ok,res};
-  }
-  function show(){
-    const r=build();current=r.lines.join('\n');clearInterval(timer);
-    const finish=()=>{
-      pre.innerHTML=r.lines.map((l,i)=>i===0?'<span class="cm">'+l+'</span>':i===r.lines.length-1?l.replace(r.res,'<span class="'+(r.ok?'ok':'bad')+'">'+r.res+'</span>'):l).join('\n');
-    };
-    if(!MOTION.on){finish();return}
-    let i=0;pre.textContent='';
-    timer=setInterval(()=>{i+=2;pre.textContent=current.slice(0,i);if(i>=current.length){clearInterval(timer);finish()}},14);
-  }
-  $('#qSim').addEventListener('click',show);
-  $('#qCopy').addEventListener('click',async()=>{toast(await copyText(current)?'Informe copiado':'No se pudo copiar')});
-  new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&!started){started=true;show();o.disconnect()}},{threshold:.3}).observe($('#codeBox'));
 })();
 
 /* =========================================================
@@ -761,7 +725,7 @@ function buildMsg(){
     'Urgencia: '+v('urg')+
     (v('msg')?'\nDetalles: '+v('msg'):'');
 }
-function updPrev(){prev.textContent=buildMsg()}
+function updPrev(){if(prev)prev.textContent=buildMsg()}
 form.addEventListener('input',updPrev);form.addEventListener('change',updPrev);
 function prefillQuote(o){
   if(o.servicio)fServ.value=o.servicio;

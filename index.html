@@ -34,10 +34,10 @@
 <!-- Fuentes y estilos -->
 <link rel="preload" href="fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=7">
+<link rel="stylesheet" href="css/styles.css?v=8">
 
 <!-- Configuración, tema y animación (antes de pintar la página, para que no parpadee) -->
-<script src="js/config.js?v=7"></script>
+<script src="js/config.js?v=8"></script>
 <script>
 (function(){
   var d=document.documentElement,c=typeof CONFIG!=='undefined'?CONFIG:{},t=null,m=null;
@@ -50,10 +50,10 @@
   if(location.protocol==='file:'){var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:wght@300..900&family=JetBrains+Mono:wght@100..800&display=swap';document.head.appendChild(l)}
 })();
 </script>
-<script src="js/nucleo.js?v=7" defer></script>
-<script src="js/fondo.js?v=7" defer></script>
-<script src="js/paisajes.js?v=7" defer></script>
-<script src="js/main.js?v=7" defer></script>
+<script src="js/nucleo.js?v=8" defer></script>
+<script src="js/fondo.js?v=8" defer></script>
+<script src="js/paisajes.js?v=8" defer></script>
+<script src="js/main.js?v=8" defer></script>
 
 <!-- Datos estructurados para buscadores -->
 <script type="application/ld+json">
@@ -92,13 +92,13 @@
         <div class="mega" id="ddServ" hidden>
           <div class="mega-in">
             <div>
-              <p class="mega-h">Qué hacemos <a href="#servicios">Ver la sección →</a></p>
+              <p class="mega-h">Qué hacemos <a href="#servicios">Ver la sección</a></p>
               <div class="mega-list" id="megaServ"></div>
             </div>
             <aside class="mega-side">
               <h4>¿No sabes cuál necesitas?</h4>
               <p>Cuéntanos qué vas a hacer con el terreno y te decimos qué trabajo te sirve.</p>
-              <a class="lnk" href="#calculadora">Calcular el área de mi lote →</a>
+              <a class="lnk" href="#calculadora">Calcular el área de mi lote</a>
               <a class="btn primary sm" href="#" data-wa="Hola, no sé qué servicio de topografía necesito. ¿Me ayudan?">Pregúntanos por WhatsApp</a>
             </aside>
           </div>
@@ -107,7 +107,7 @@
       <div class="dd" data-dd="trab">
         <button class="lk" type="button" data-sec="trabajos" aria-expanded="false" aria-controls="ddTrab">Trabajos<svg class="ico chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
         <div class="mega" id="ddTrab" hidden>
-          <p class="mega-h">Ocho tipos de trabajo, por categoría <a href="#trabajos">Ver todos →</a></p>
+          <p class="mega-h">Ocho tipos de trabajo, por categoría <a href="#trabajos">Ver todos</a></p>
           <div class="mega-cols" id="megaTrab"></div>
         </div>
       </div>
@@ -209,15 +209,10 @@
     <div class="wrap hero-in">
       <p class="eyebrow reveal"><span class="dot"></span>Topografía real · Colombia</p>
       <h1 class="reveal" style="--d:.08s">Medimos el terreno.<br><span class="grad">Tú decides con certeza.</span></h1>
-      <p class="sub reveal" style="--d:.16s">Levantamientos, loteos, replanteo y fotogrametría con estación total, GNSS RTK y dron. Planos DWG georreferenciados, listos para curaduría y obra.</p>
+      <p class="sub reveal" style="--d:.16s">Levantamientos, loteos, replanteo de obra y fotogrametría. Planos DWG georreferenciados, listos para curaduría y obra.</p>
       <div class="hero-actions reveal" style="--d:.24s">
         <a class="btn primary" href="#cotizar">Solicitar cotización</a>
         <a class="btn" href="#calculadora">Calcular el área de mi lote</a>
-      </div>
-      <div class="hero-stats glass reveal" style="--d:.32s">
-        <div><b data-count="3">3</b><span>equipos: dron, estación total y GNSS RTK</span></div>
-        <div><b>Colombia</b><span>predios rurales y urbanos</span></div>
-        <div><b>DWG</b><span>planos en MAGNA-SIRGAS</span></div>
       </div>
     </div>
     <div class="readout" id="readout" aria-hidden="true"></div>
@@ -229,7 +224,6 @@
       <div class="center reveal">
         <p class="eyebrow"><span class="dot"></span>Servicios</p>
         <h2>Un servicio para cada etapa del proyecto.</h2>
-        <p class="lead">Elige uno y míralo en acción: cada animación muestra cómo trabajamos en campo.</p>
       </div>
       <div class="svc-grid">
         <div class="svc-list reveal" role="tablist" aria-label="Servicios" id="svcList"></div>
@@ -243,7 +237,6 @@
           <p class="svc-desc" id="svcDesc"></p>
           <div class="specs">
             <div><small>Equipos</small><span id="svcEq"></span></div>
-            <div><small>Plazo</small><span id="svcPlazo"></span></div>
           </div>
           <ul class="deliver" id="svcDeliver"></ul>
           <div class="svc-actions">
@@ -259,8 +252,7 @@
     <div class="wrap">
       <div class="center reveal">
         <p class="eyebrow"><span class="dot"></span>Trabajos</p>
-        <h2>Lo que medimos en campo.</h2>
-        <p class="lead">De la finca a la obra: ocho tipos de trabajo, cada uno con su paisaje. Toca uno para ver qué entregamos.</p>
+        <h2>Lo que medimos.</h2>
         <div class="chips" id="projChips" style="justify-content:center;margin-top:22px">
           <button class="chip" type="button" aria-pressed="true" data-f="todos">Todos</button>
           <button class="chip" type="button" aria-pressed="false" data-f="predios">Predios</button>
@@ -290,7 +282,7 @@
       <div class="center reveal">
         <p class="eyebrow"><span class="dot"></span>Herramienta gratuita</p>
         <h2>Calcula el área de tu lote.</h2>
-        <p class="lead">Escribe las coordenadas de los vértices, pégalas desde una lista o arrastra los puntos sobre el plano.</p>
+        <p class="lead">Escribe o pega las coordenadas de los vértices.</p>
       </div>
       <div class="calc">
         <div class="panel glass reveal">
@@ -338,17 +330,16 @@
       <div class="center reveal">
         <p class="eyebrow"><span class="dot"></span>Del campo a la oficina</p>
         <h2>Sin perder un solo punto.</h2>
-        <p class="lead">Equipos de medición directa y procesamiento en software de ingeniería.</p>
       </div>
       <div class="bento">
         <article class="tile w3 glass reveal">
           <div class="tag">Equipos</div>
           <h3>Tecnología de alta precisión</h3>
-          <p>Elegimos el equipo según el terreno y lo que necesitas medir. Toca uno para ver para qué lo usamos.</p>
+          <p>Elegimos el equipo según el terreno y lo que necesitas medir.</p>
           <div class="equip" id="equip">
             <button class="eq" type="button" aria-expanded="true"><span class="eq-h"><b>Estación total</b><i>Poligonales y replanteo</i></span><span class="eq-d">Mide ángulos y distancias para levantamientos de detalle, loteos y replanteo de obra.</span></button>
-            <button class="eq" type="button" aria-expanded="false"><span class="eq-h"><b>GNSS RTK</b><i>Control y levantamientos</i></span><span class="eq-d">Da coordenadas con corrección en tiempo real: rápido para fincas y predios grandes y para amarrar el proyecto a un sistema de coordenadas.</span></button>
-            <button class="eq" type="button" aria-expanded="false"><span class="eq-h"><b>Dron</b><i>Fotogrametría</i></span><span class="eq-d">Con fotogrametría cubre áreas grandes o de difícil acceso y genera ortomosaico, modelo 3D y curvas de nivel.</span></button>
+            <button class="eq" type="button" aria-expanded="false"><span class="eq-h"><b>GNSS RTK</b><i>Control y levantamientos</i></span><span class="eq-d">Ubica cada punto en tiempo real. Rinde en predios grandes y amarra el proyecto al sistema oficial del país.</span></button>
+            <button class="eq" type="button" aria-expanded="false"><span class="eq-h"><b>Dron</b><i>Fotogrametría</i></span><span class="eq-d">Toma fotos aéreas para generar ortomosaico, modelo 3D y curvas de nivel.</span></button>
           </div>
           <canvas class="eq-scape" id="eqScape" aria-hidden="true"></canvas>
         </article>
@@ -356,7 +347,7 @@
         <article class="tile w3 glass reveal" style="--d:.08s">
           <div class="tag">Procesamiento</div>
           <h3>De nube de puntos a plano</h3>
-          <p>Arrastra para comparar los datos crudos con el plano de curvas de nivel generado.</p>
+          <p>Desliza para comparar los puntos medidos con las curvas de nivel.</p>
           <div class="compare" id="compare">
             <canvas id="cmpBottom"></canvas>
             <canvas id="cmpTop"></canvas>
@@ -367,24 +358,6 @@
           <label class="sl cmp-ctl"><span>Puntos</span><input type="range" id="cmpDens" min="6" max="22" value="10" aria-label="Separación entre puntos medidos"></label>
         </article>
 
-        <article class="tile w4 glass reveal">
-          <div class="tag">Sistemas de referencia</div>
-          <h3>Tus coordenadas, en el sistema que necesites</h3>
-          <p>Elige uno para ver de qué se trata.</p>
-          <div class="chips" id="refChips">
-            <button class="chip" type="button" aria-pressed="true" data-k="magna">MAGNA-SIRGAS</button>
-            <button class="chip" type="button" aria-pressed="false" data-k="origen">Origen Nacional</button>
-            <button class="chip" type="button" aria-pressed="false" data-k="local">Origen local</button>
-            <button class="chip" type="button" aria-pressed="false" data-k="cotas">Cotas</button>
-          </div>
-          <p id="refInfo" aria-live="polite"></p>
-        </article>
-
-        <article class="tile w2 glass reveal" style="--d:.08s">
-          <div class="tag">Entregables</div>
-          <h3>Planos DWG</h3>
-          <p>Georreferenciados en MAGNA-SIRGAS y listos para curaduría y obra.</p>
-        </article>
       </div>
     </div>
   </section>
@@ -395,45 +368,13 @@
       <div class="center reveal">
         <p class="eyebrow"><span class="dot"></span>Proceso</p>
         <h2>Cómo trabajamos.</h2>
-        <p class="lead">Cuatro pasos, claros desde el primer día. Toca cada uno para ver qué necesitamos de ti.</p>
       </div>
       <div class="steps reveal" id="steps">
         <div class="bar"></div>
         <button class="step glass" type="button" aria-expanded="true"><span class="node">1</span><h3>Alcance</h3><span class="t">Revisamos el predio, los documentos y lo que necesitas medir.</span><span class="more"><b>Tú:</b> ubicación, escritura o folio y plano previo si existe.<br><b>Recibes:</b> cotización y plazo.</span></button>
         <button class="step glass" type="button" aria-expanded="false"><span class="node">2</span><h3>Campo</h3><span class="t">Amarramos a puntos de control y levantamos el terreno.</span><span class="more"><b>Tú:</b> acceso al predio y un contacto en sitio.<br><b>Recibes:</b> aviso de fecha y hora de la visita.</span></button>
         <button class="step glass" type="button" aria-expanded="false"><span class="node">3</span><h3>Procesamiento</h3><span class="t">Ajustamos las medidas, generamos la superficie y dibujamos.</span><span class="more"><b>Tú:</b> estar disponible por si surge una duda.<br><b>Recibes:</b> revisión del cierre y ajuste de coordenadas.</span></button>
-        <button class="step glass" type="button" aria-expanded="false"><span class="node">4</span><h3>Entrega</h3><span class="t">Planos DWG y archivos digitales listos para curaduría y obra.</span><span class="more"><b>Tú:</b> revisas y nos cuentas si falta algo.<br><b>Recibes:</b> planos y archivos digitales.</span></button>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTROL DE CALIDAD -->
-  <section class="quality" id="calidad">
-    <div class="wrap">
-      <div class="center reveal">
-        <p class="eyebrow"><span class="dot"></span>Control de calidad</p>
-        <h2>Así se verifica una medición.</h2>
-        <p class="lead">Un levantamiento se comprueba con números. Simula el cierre de una poligonal y mira cuándo una medición cumple la tolerancia.</p>
-      </div>
-      <div class="q-grid">
-        <div class="reveal">
-          <h3>¿Qué es el cierre de una poligonal?</h3>
-          <p>Es la comprobación básica de una medición: al recorrer los puntos de control y volver al inicio, los números deben coincidir.</p>
-          <ul>
-            <li><strong>Cierre angular:</strong> la suma de los ángulos medidos se compara con la suma teórica; la diferencia es el error angular.</li>
-            <li><strong>Cierre lineal:</strong> al volver al punto de partida, la poligonal debe cerrar; el error se compara con el perímetro.</li>
-            <li><strong>Tolerancia:</strong> si el error la supera, la medición se repite.</li>
-          </ul>
-        </div>
-        <div class="code reveal" style="--d:.1s" id="codeBox">
-          <div class="file">cierre_poligonal.txt · simulación
-            <div>
-              <button class="ib" id="qSim" type="button" aria-label="Simular otro cierre" data-tip="Simular otro"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5"/></svg></button>
-              <button class="ib" id="qCopy" type="button" aria-label="Copiar el informe" data-tip="Copiar"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button>
-            </div>
-          </div>
-          <pre id="report" aria-live="polite"></pre>
-        </div>
+        <button class="step glass" type="button" aria-expanded="false"><span class="node">4</span><h3>Entrega</h3><span class="t">Te enviamos los planos y resolvemos tus dudas.</span><span class="more"><b>Tú:</b> revisas y nos cuentas si falta algo.<br><b>Recibes:</b> planos DWG y archivos digitales.</span></button>
       </div>
     </div>
   </section>
@@ -447,11 +388,10 @@
       </div>
       <div class="faq" id="faqList">
         <div class="q reveal"><button type="button" aria-expanded="false">¿Qué necesito para pedir una cotización?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>La ubicación del predio (municipio y vereda o barrio), el área aproximada y para qué necesitas el trabajo. Si tienes escritura, folio de matrícula o un plano anterior, mejor.</p></div></div></div>
-        <div class="q reveal"><button type="button" aria-expanded="false">¿Cuánto cuesta un levantamiento?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Depende del área, el acceso, la vegetación y los entregables. Por eso cotizamos cada trabajo; completa el formulario y te respondemos con un valor y un plazo.</p></div></div></div>
+        <div class="q reveal"><button type="button" aria-expanded="false">¿Cuánto cuesta y cuánto se demora?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Depende del área, el acceso y lo que necesites recibir. Por eso cotizamos cada trabajo: completa el formulario y te enviamos el valor y el tiempo de entrega.</p></div></div></div>
         <div class="q reveal"><button type="button" aria-expanded="false">¿En qué sistema de coordenadas entregan?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>En MAGNA-SIRGAS (Origen Nacional, EPSG:9377) o en el sistema que pida tu proyecto o la entidad que lo revisa.</p></div></div></div>
-        <div class="q reveal"><button type="button" aria-expanded="false">¿Cuánto tarda la entrega?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Depende del área, el acceso y el tipo de trabajo. Te damos el plazo en la cotización, antes de salir a campo.</p></div></div></div>
-        <div class="q reveal"><button type="button" aria-expanded="false">¿Los planos sirven para licencias o escrituras?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Entregamos planos DWG georreferenciados, listos para curaduría y obra. Cuéntanos el trámite y confirmamos qué debe incluir el plano antes de salir a campo.</p></div></div></div>
-        <div class="q reveal"><button type="button" aria-expanded="false">¿En qué zonas trabajan?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Trabajamos en Colombia, incluidas fincas y zonas rurales de difícil acceso. Escríbenos con la ubicación de tu predio y te confirmamos si podemos atenderlo y en qué plazo.</p></div></div></div>
+        <div class="q reveal"><button type="button" aria-expanded="false">¿Los planos sirven para licencias o escrituras?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Sí. Cuéntanos el trámite y confirmamos qué debe incluir el plano antes de salir a campo.</p></div></div></div>
+        <div class="q reveal"><button type="button" aria-expanded="false">¿En qué zonas trabajan?<span class="pl" aria-hidden="true">+</span></button><div class="a"><div><p>Trabajamos en Colombia, también en fincas y zonas rurales de difícil acceso. Escríbenos con la ubicación del predio y te confirmamos.</p></div></div></div>
       </div>
     </div>
   </section>
@@ -467,8 +407,7 @@
       <div class="reveal">
         <p class="eyebrow"><span class="dot"></span>Cotización</p>
         <h2>Cuéntanos qué vas a medir.</h2>
-        <p class="lead">Con estos datos te respondemos con una cotización y un plazo. Así se verá tu mensaje:</p>
-        <pre class="preview" id="preview" aria-live="polite"></pre>
+        <p class="lead">Te respondemos por WhatsApp con la cotización.</p>
       </div>
       <form class="panel glass reveal" id="quoteForm" style="--d:.1s" novalidate>
         <div class="two">
@@ -515,7 +454,6 @@
     <div class="f-grid">
       <div>
         <a class="f-logo" href="#inicio" aria-label="GF Topografías Colombia: ir al inicio"><img class="lg-oscuro" src="img/logo-blanco.svg" alt="" width="210" height="148"><img class="lg-claro" src="img/logo.svg" alt="" width="210" height="148"></a>
-        <p>Topografía de precisión, reimaginada. Profesional. Rápida. Tuya.</p>
       </div>
       <div>
         <h4>Secciones</h4>
