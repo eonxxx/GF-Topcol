@@ -487,27 +487,54 @@ const calc=(()=>{
    COMPARADOR, EQUIPOS Y PROCESO
    ========================================================= */
 const compare=(()=>{
-  const bot=$('#cmpBottom'),top=$('#cmpTop'),rng=$('#cmpRange'),bar=$('#cmpBar'),dens=$('#cmpDens'),f=makeTerrain(21);
-  function drawPts(){
-    const s=sizeCanvas(bot),ctx=s.ctx,w=s.w,h=s.h,sp=+dens.value;
-    panelBg(ctx,w,h);
-    const d=f.hi-f.lo;
-    for(let y=sp/2;y<h;y+=sp)for(let x=sp/2;x<w;x+=sp){
-      const jx=x+Math.sin(x*12.3+y*3.1)*sp*.2,jy=y+Math.cos(x*4.7+y*9.1)*sp*.2;
-      const t=clamp((f(jx/w,jy/h)-f.lo)/d,0,1);
-      ctx.fillStyle=rgba(mix(C.lav,C.peach,t),.95);ctx.beginPath();ctx.arc(jx,jy,clamp(sp*.17,1.2,2.6),0,6.283);ctx.fill();
+  /* Los puntos medidos (derecha) y el plano de curvas (izquierda) salen de la misma medición:
+     las curvas se calculan interpolando los puntos, así que con más puntos el plano tiene
+     más detalle y las curvas pueden ir más seguidas. */
+  const bot=$('#cmpBottom'),top=$('#cmpTop'),rng=$('#cmpRange'),bar=$('#cmpBar'),dens=$('#cmpDens'),info=$('#cmpInfo'),f=makeTerrain(21);
+  const RELIEVE=12;                       // metros de desnivel del terreno de ejemplo
+  const PASOS=[3,2,1.5,1,.75,.5];         // curvas cada X metros, de pocos a muchos puntos
+  function medir(w,h){
+    const t=clamp(+dens.value/100,0,1);
+    const nx=Math.round(lerp(4,34,Math.pow(t,1.15))),ny=Math.max(3,Math.round(nx*h/w));
+    const pts=[],z=new Float32Array(nx*ny);
+    for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){
+      // posición con un pequeño desorden, como las mediciones reales en campo
+      const u=(i+.5+Math.sin(i*12.3+j*3.1)*.18)/nx,v=(j+.5+Math.cos(i*4.7+j*9.1)*.18)/ny,val=f(u,v);
+      z[j*nx+i]=val;pts.push([u,v,val]);
     }
+    const paso=PASOS[Math.min(PASOS.length-1,Math.floor(t*PASOS.length))];
+    return{t,nx,ny,pts,z,paso};
   }
-  function drawLines(){
-    const s=sizeCanvas(top),ctx=s.ctx;
-    panelBg(ctx,s.w,s.h);
-    drawContours(ctx,buildGrid(f,s.w,s.h,Math.max(8,Math.round(s.w/70))),levelsFor(f,16),C.peach,C.lav,.4,.85,1.1);
+  /* Superficie suave (Catmull-Rom) que pasa por los puntos medidos */
+  function superficie(M){
+    const{nx,ny,z}=M,at=(i,j)=>z[clamp(j,0,ny-1)*nx+clamp(i,0,nx-1)];
+    const cr=(p0,p1,p2,p3,t)=>.5*(2*p1+(p2-p0)*t+(2*p0-5*p1+4*p2-p3)*t*t+(3*p1-p0-3*p2+p3)*t*t*t);
+    return(u,v)=>{
+      const gx=u*nx-.5,gy=v*ny-.5,i=Math.floor(gx),j=Math.floor(gy),fx=gx-i,fy=gy-j,r=[];
+      for(let k=-1;k<=2;k++)r.push(cr(at(i-1,j+k),at(i,j+k),at(i+1,j+k),at(i+2,j+k),fx));
+      return cr(r[0],r[1],r[2],r[3],fy);
+    };
+  }
+  function draw(){
+    const sb=sizeCanvas(bot),st=sizeCanvas(top),w=sb.w,h=sb.h,M=medir(w,h),d=f.hi-f.lo;
+    const color=v=>mix(C.lav,C.peach,clamp((v-f.lo)/d,0,1)),rad=lerp(3.4,1.7,M.t);
+    // Derecha: los puntos medidos, de color según su altura
+    panelBg(sb.ctx,w,h);
+    M.pts.forEach(p=>{sb.ctx.fillStyle=rgba(color(p[2]),.95);sb.ctx.beginPath();sb.ctx.arc(p[0]*w,p[1]*h,rad,0,6.283);sb.ctx.fill()});
+    // Izquierda: el plano de curvas calculado con esos puntos
+    const ctx=st.ctx,S=superficie(M),pz=M.paso/RELIEVE*d,levels=[];
+    panelBg(ctx,st.w,st.h);
+    for(let L=Math.ceil(f.lo/pz)*pz;L<=f.hi;L+=pz)levels.push(L);
+    drawContours(ctx,buildGrid(S,st.w,st.h,Math.max(5,Math.round(st.w/90))),levels,C.peach,C.lav,.5,.9,1.15);
+    M.pts.forEach(p=>{ctx.fillStyle='rgba(238,242,244,.32)';ctx.beginPath();ctx.arc(p[0]*w,p[1]*h,1.2,0,6.283);ctx.fill()});
+    const dec=M.paso%1===0?0:(M.paso*10)%1===0?1:2;
+    if(info)info.textContent=fmt(M.pts.length,0)+' puntos · curvas cada '+fmt(M.paso,dec)+' m';
   }
   function upd(){top.style.clipPath='inset(0 '+(100-rng.value)+'% 0 0)';bar.style.left=rng.value+'%'}
   rng.addEventListener('input',upd);
-  dens.addEventListener('input',drawPts);
+  dens.addEventListener('input',draw);
   upd();
-  return{draw:()=>{drawPts();drawLines()}};
+  return{draw};
 })();
 
 (()=>{

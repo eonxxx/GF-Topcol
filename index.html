@@ -34,10 +34,10 @@
 <!-- Fuentes y estilos -->
 <link rel="preload" href="fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/styles.css?v=8">
+<link rel="stylesheet" href="css/styles.css?v=9">
 
 <!-- Configuración, tema y animación (antes de pintar la página, para que no parpadee) -->
-<script src="js/config.js?v=8"></script>
+<script src="js/config.js?v=9"></script>
 <script>
 (function(){
   var d=document.documentElement,c=typeof CONFIG!=='undefined'?CONFIG:{},t=null,m=null;
@@ -50,10 +50,10 @@
   if(location.protocol==='file:'){var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:wght@300..900&family=JetBrains+Mono:wght@100..800&display=swap';document.head.appendChild(l)}
 })();
 </script>
-<script src="js/nucleo.js?v=8" defer></script>
-<script src="js/fondo.js?v=8" defer></script>
-<script src="js/paisajes.js?v=8" defer></script>
-<script src="js/main.js?v=8" defer></script>
+<script src="js/nucleo.js?v=9" defer></script>
+<script src="js/fondo.js?v=9" defer></script>
+<script src="js/paisajes.js?v=9" defer></script>
+<script src="js/main.js?v=9" defer></script>
 
 <!-- Datos estructurados para buscadores -->
 <script type="application/ld+json">
@@ -347,7 +347,7 @@
         <article class="tile w3 glass reveal" style="--d:.08s">
           <div class="tag">Procesamiento</div>
           <h3>De nube de puntos a plano</h3>
-          <p>Desliza para comparar los puntos medidos con las curvas de nivel.</p>
+          <p>Cada punto es una medición en campo. Mueve la barra: con más puntos, el plano tiene más curvas y más detalle.</p>
           <div class="compare" id="compare">
             <canvas id="cmpBottom"></canvas>
             <canvas id="cmpTop"></canvas>
@@ -355,7 +355,7 @@
             <div class="bar" id="cmpBar"></div><div class="knob">&#8596;</div>
             <input type="range" min="0" max="100" value="50" id="cmpRange" aria-label="Comparar curvas de nivel y puntos medidos">
           </div>
-          <label class="sl cmp-ctl"><span>Puntos</span><input type="range" id="cmpDens" min="6" max="22" value="10" aria-label="Separación entre puntos medidos"></label>
+          <div class="cmp-ctl"><label class="sl"><span>Puntos medidos</span><input type="range" id="cmpDens" min="0" max="100" value="40" aria-label="Cantidad de puntos medidos"></label><span class="cmp-info" id="cmpInfo" aria-live="polite"></span></div>
         </article>
 
       </div>
