@@ -24,7 +24,7 @@ const svg=(k,c)=>'<svg class="ico'+(c?' '+c:'')+'" viewBox="0 0 24 24" aria-hidd
    ========================================================= */
 const PLAZO='Según el área y el acceso; lo confirmamos al cotizar';
 const SERVICES=[
-  {key:'lev',name:'Levantamiento topográfico',short:'Fincas, lotes y obras',
+  {key:'lev',name:'Levantamiento topográfico',short:'Fincas, lotes y proyectos',
    desc:'Medimos linderos, construcciones, vías y cotas para que tengas el estado real del terreno.',
    eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Plano topográfico DWG','Georreferenciado en MAGNA-SIRGAS','Puntos XYZ']},
   {key:'lin',name:'Loteo y linderos',short:'División de predios y mojones',
@@ -33,26 +33,26 @@ const SERVICES=[
   {key:'vol',name:'Curvas de nivel y volúmenes',short:'Modelo 3D, cortes y llenos',
    desc:'Modelamos el terreno y calculamos cortes y llenos. Mueve la cota de proyecto y mira cómo cambian.',
    eq:'GNSS RTK · Estación total · Dron',plazo:PLAZO,out:['Curvas de nivel','Modelo 3D','Perfiles y secciones','Cálculo de volúmenes']},
-  {key:'rep',name:'Replanteo de obra',short:'Del plano al terreno',
-   desc:'Llevamos tu diseño al terreno: urbanismo, vías y edificaciones.',
-   eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Estacado de ejes','Esquinas y niveles','Cartera de replanteo']},
+  {key:'rep',name:'Apoyo topográfico en obras civiles',short:'Vías, puentes y urbanismo',
+   desc:'Acompañamos la obra con replanteo, control de niveles y seguimiento del avance.',
+   eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Replanteo de ejes y niveles','Control de cotas','Planos de obra construida']},
   {key:'dro',name:'Fotogrametría',short:'Áreas grandes o de difícil acceso',
    desc:'Con vuelos de dron cubrimos grandes extensiones en poco tiempo.',
    eq:'Dron · GNSS RTK',plazo:PLAZO,out:['Ortomosaico','Modelo 3D','Curvas de nivel','Cálculo de volúmenes']}
 ];
 const PROJECTS=[
   {id:'p1',tipo:'predios',scene:'finca',pal:'day',seed:3,svc:'Levantamiento topográfico',tag:'Predios rurales',title:'Fincas y linderos',text:'Linderos, áreas y cercas de fincas ganaderas y agrícolas.',list:['Servicio: levantamiento topográfico y linderos','Entregables: plano DWG, cuadro de áreas y coordenadas']},
-  {id:'p2',tipo:'obra',scene:'via',pal:'dusk',seed:5,svc:'Replanteo de obra',tag:'Vías y accesos',title:'Ejes y abscisado de vías',text:'Eje, perfil y secciones para vías veredales y accesos a predios.',list:['Servicio: levantamiento y replanteo de ejes','Entregables: perfil longitudinal, secciones y abscisado en campo']},
+  {id:'p2',tipo:'obra',scene:'via',pal:'dusk',seed:5,svc:'Apoyo topográfico en obras civiles',tag:'Vías y carreteras',title:'Ejes y abscisado de vías',text:'Eje, perfil y secciones para carreteras, vías veredales y accesos.',list:['Servicio: apoyo topográfico en obras civiles','Entregables: perfil longitudinal, secciones y abscisado en campo']},
   {id:'p3',tipo:'predios',scene:'loteo',pal:'dawn',seed:7,svc:'Loteo y linderos',tag:'Loteo y urbanismo',title:'Loteo de un globo de terreno',text:'División en lotes, manzanas y vías, con su cuadro de áreas.',list:['Servicio: loteo y linderos','Entregables: plano de loteo, cuadro de áreas y mojones en campo']},
   {id:'p4',tipo:'modelos',scene:'dron',pal:'day',seed:9,svc:'Fotogrametría',tag:'Fotogrametría',title:'Ortomosaico y modelo del terreno',text:'Grandes extensiones fotografiadas desde el aire, con puntos de control en GNSS RTK.',list:['Servicio: fotogrametría con puntos de control GNSS RTK','Entregables: ortomosaico, nube de puntos y curvas de nivel']},
   {id:'p5',tipo:'modelos',scene:'curvas',pal:'night',seed:11,svc:'Curvas de nivel y volúmenes',tag:'Curvas de nivel',title:'Relieve en curvas de nivel',text:'Modelo digital del terreno con curvas a la equidistancia que necesites.',list:['Servicio: curvas de nivel y modelo 3D','Entregables: curvas en DWG, modelo del terreno y perfiles']},
   {id:'p6',tipo:'obra',scene:'vol',pal:'day',seed:13,svc:'Curvas de nivel y volúmenes',tag:'Movimiento de tierras',title:'Cortes, llenos y volúmenes',text:'Volúmenes calculados sobre el terreno real, antes y después de la obra.',list:['Servicio: curvas de nivel y volúmenes','Entregables: secciones, cuadro de volúmenes y plano de cortes y llenos']},
   {id:'p7',tipo:'predios',scene:'catastro',pal:'dawn',seed:15,svc:'Loteo y linderos',tag:'Planos de predio',title:'Plano con coordenadas',text:'Predio dibujado con sus linderos, vértices, áreas y colindantes.',list:['Servicio: levantamiento y linderos','Entregables: plano georreferenciado en MAGNA-SIRGAS y cuadro de coordenadas']},
-  {id:'p8',tipo:'obra',scene:'replanteo',pal:'dawn',seed:17,svc:'Replanteo de obra',tag:'Replanteo',title:'Estacado de obra',text:'Estacas en cada eje y esquina, con niveles verificados.',list:['Servicio: replanteo de obra','Entregables: estacado de ejes y esquinas, y cartera de replanteo']}
+  {id:'p8',tipo:'obra',scene:'replanteo',pal:'dawn',seed:17,svc:'Apoyo topográfico en obras civiles',tag:'Puentes',title:'Replanteo de puentes',text:'Ejes, apoyos y niveles marcados y verificados en campo.',list:['Servicio: apoyo topográfico en obras civiles','Entregables: cartera de replanteo y control de cotas']}
 ];
 const CATS=[
   {k:'predios',name:'Predios',desc:'Fincas, lotes y planos'},
-  {k:'obra',name:'Obra',desc:'Vías, tierras y replanteo'},
+  {k:'obra',name:'Obras civiles',desc:'Vías, puentes y movimiento de tierras'},
   {k:'modelos',name:'Fotogrametría y modelos',desc:'Ortomosaicos y relieve'}
 ];
 const go=id=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:MOTION.on?'smooth':'auto',block:'start'})};

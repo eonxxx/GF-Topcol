@@ -76,7 +76,7 @@ Para verla exactamente como en internet, abre una terminal en esta carpeta y eje
 
 ## Cuando hagas cambios
 
-Los estilos y scripts llevan `?v=10` en el HTML. Si cambias `styles.css` o algún `.js`, sube ese número (`?v=11`) en `index.html`, `privacidad.html`, `404.html` y `landing/index.html` para que los visitantes reciban la versión nueva y no la guardada en su navegador.
+Los estilos y scripts llevan `?v=11` en el HTML. Si cambias `styles.css` o algún `.js`, sube ese número (`?v=12`) en `index.html`, `privacidad.html`, `404.html` y `landing/index.html` para que los visitantes reciban la versión nueva y no la guardada en su navegador.
 
 ## Notas
 
