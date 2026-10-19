@@ -22,6 +22,8 @@ robots.txt            Instrucciones para buscadores
 sitemap.xml           Mapa del sitio para Google
 .htaccess             Ajustes para hostings con Apache/cPanel (caché, compresión, página 404); GitHub lo ignora
 .nojekyll             Le indica a GitHub Pages que publique los archivos tal cual, sin procesarlos
+landing/              Página de presentación con estilo de vidrio (index.html, landing.css, landing.js);
+                      usa la fuente, el logo, config.js y los scripts del sitio principal
 ```
 
 ## Logo
@@ -64,6 +66,7 @@ El visitante siempre puede cambiar el tema y pausar la animación con los dos in
 - **Hosting con cPanel**: entra al Administrador de archivos y sube todo el contenido de esta carpeta a `public_html` (incluido `.htaccess`, que puede estar oculto). Cuando tengas certificado SSL, activa las tres líneas de HTTPS dentro de `.htaccess`.
 - **Netlify** (gratis): entra a app.netlify.com/drop y arrastra la carpeta. Luego puedes conectar tu dominio.
 - **GitHub Pages** (gratis, así está publicado): repositorio `eonxxx/GF-Topcol`, rama `main`, carpeta raíz (`/`).
+  La landing queda en `https://eonxxx.github.io/GF-Topcol/landing/`. La rama `sitio-v1` guarda la versión anterior a la landing.
   Para actualizar, sube los archivos nuevos al repositorio (Add file → Upload files → Commit changes); en un par de minutos se ve el cambio.
 
 ## Ver la página en tu computador
@@ -73,7 +76,7 @@ Para verla exactamente como en internet, abre una terminal en esta carpeta y eje
 
 ## Cuando hagas cambios
 
-Los estilos y scripts llevan `?v=10` en el HTML. Si cambias `styles.css` o algún `.js`, sube ese número (`?v=11`) en `index.html`, `privacidad.html` y `404.html` para que los visitantes reciban la versión nueva y no la guardada en su navegador.
+Los estilos y scripts llevan `?v=10` en el HTML. Si cambias `styles.css` o algún `.js`, sube ese número (`?v=11`) en `index.html`, `privacidad.html`, `404.html` y `landing/index.html` para que los visitantes reciban la versión nueva y no la guardada en su navegador.
 
 ## Notas
 

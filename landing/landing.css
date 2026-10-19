@@ -1,0 +1,214 @@
+/* =========================================================
+   GF Topografías Colombia · Landing con estilo de vidrio
+   ---------------------------------------------------------
+   Usa la misma paleta del sitio principal:
+   modo oscuro = noche (#0F1A22), oro (#F2B731) y azul acero (#8DB3D6)
+   modo claro  = papel (#F3F5F3), tinta (#13202A) y oro (#E2A21C)
+   1. Fuente y variables   5. Navegación flotante   9. Contacto
+   2. Base                 6. Inicio                10. Pie y botón de WhatsApp
+   3. Fondo desenfocado    7. Servicios             11. Animación apagada
+   4. Vidrio y botones     8. Calculadora y proceso 12. Pantallas pequeñas
+   ========================================================= */
+
+/* 1. Fuente (alojada en /fonts, licencia SIL OFL) y variables */
+@font-face{font-family:'Figtree';font-style:normal;font-weight:300 900;font-display:swap;src:url(../fonts/figtree.woff2) format('woff2')}
+
+:root{
+  --bg:#0F1A22; --text:#EEF2F4; --muted:#A7B3BD;
+  --gold:#F2B731; --gold-text:#F2B731; --steel:#8DB3D6; --on-gold:#13202A;
+  --veil:linear-gradient(180deg,rgba(15,26,34,.40) 0%,rgba(15,26,34,.58) 50%,rgba(15,26,34,.80) 100%);
+  --glass:rgba(22,35,45,.40); --glass-strong:rgba(22,35,45,.94);
+  --rim:rgba(255,255,255,.20); --rim-soft:rgba(255,255,255,.13);
+  --spec:rgba(255,255,255,.30);
+  --sheen:linear-gradient(160deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.02) 40%,rgba(255,255,255,0) 62%);
+  --shadow:0 24px 60px rgba(0,0,0,.34);
+  --fill:rgba(255,255,255,.08); --fill-h:rgba(255,255,255,.14);
+  --gold-fill:rgba(242,183,49,.90); --gold-fill-h:rgba(255,201,77,.96); --gold-rim:rgba(255,232,165,.70);
+  --grid:rgba(255,255,255,.07); --poly:rgba(242,183,49,.14); --scrim:rgba(10,18,24,.55);
+  --radius:26px;
+  --font:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#F3F5F3; --text:#13202A; --muted:#4E5D69;
+  --gold:#E2A21C; --gold-text:#8A6300; --steel:#3F6E99; --on-gold:#13202A;
+  --veil:linear-gradient(180deg,rgba(243,245,243,.22) 0%,rgba(243,245,243,.45) 50%,rgba(243,245,243,.76) 100%);
+  --glass:rgba(255,255,255,.46); --glass-strong:rgba(255,255,255,.96);
+  --rim:rgba(255,255,255,.90); --rim-soft:rgba(255,255,255,.78);
+  --spec:#FFFFFF;
+  --sheen:linear-gradient(160deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.10) 40%,rgba(255,255,255,0) 62%);
+  --shadow:0 0 0 1px rgba(19,32,42,.06),0 24px 60px rgba(19,32,42,.14);
+  --fill:rgba(255,255,255,.55); --fill-h:rgba(255,255,255,.82);
+  --gold-fill:rgba(226,162,28,.92); --gold-fill-h:rgba(242,183,49,.96); --gold-rim:rgba(255,240,200,.95);
+  --grid:rgba(19,32,42,.08); --poly:rgba(226,162,28,.16); --scrim:rgba(243,245,243,.6);
+  color-scheme:light;
+}
+
+/* 2. Base */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3{font-weight:800;letter-spacing:-.03em;line-height:1.08;text-wrap:balance}
+p{text-wrap:pretty}
+:focus-visible{outline:2px solid var(--steel);outline-offset:3px;border-radius:12px}
+.ico{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.skip{position:fixed;left:16px;top:-80px;z-index:200;padding:10px 18px;border-radius:12px;background:var(--glass-strong);color:var(--text);transition:top .2s}
+.skip:focus{top:16px}
+
+/* 3. Fondo: paisaje desenfocado, velo para que el texto se lea y curvas de nivel */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg canvas{position:absolute;left:-5%;top:-5%;width:110%;height:110%;filter:blur(10px) saturate(1.12)}
+.bg::after{content:"";position:absolute;inset:0;background:var(--veil)}
+#topo{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:1;pointer-events:none;opacity:.7}
+.nav-wrap,main,.foot{position:relative;z-index:2}
+
+/* 4. Vidrio y botones */
+.glass{
+  position:relative;background:var(--glass);border:1px solid var(--rim-soft);border-radius:var(--radius);
+  backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);
+  box-shadow:inset 0 1px 0 var(--spec),var(--shadow);
+}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--sheen);pointer-events:none}
+.glass>*{position:relative}
+
+.btn{
+  position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:13px 24px;border-radius:999px;font-weight:600;font-size:.95rem;line-height:1.2;white-space:nowrap;
+  color:var(--text);background:var(--fill);border:1px solid var(--rim);
+  backdrop-filter:blur(14px) saturate(180%);-webkit-backdrop-filter:blur(14px) saturate(180%);
+  box-shadow:inset 0 1px 0 var(--spec),0 8px 22px rgba(0,0,0,.16);
+  transition:transform .2s,background .2s;
+}
+.btn::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--sheen);z-index:-1;pointer-events:none}
+.btn:hover{transform:translateY(-2px);background:var(--fill-h)}
+.btn:active{transform:none}
+.btn.primary{color:var(--on-gold);background:var(--gold-fill);border-color:var(--gold-rim);
+  box-shadow:inset 0 1px 0 rgba(255,250,232,.85),inset 0 -2px 6px rgba(130,80,0,.20),0 10px 24px rgba(0,0,0,.20)}
+.btn.primary::before{background:linear-gradient(180deg,rgba(255,255,255,.36) 0%,rgba(255,255,255,0) 55%)}
+.btn.primary:hover{background:var(--gold-fill-h)}
+.btn.sm{padding:9px 18px;font-size:.88rem}
+.btn svg{width:19px;height:19px;flex:none}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.actions.center{justify-content:center}
+
+/* 5. Navegación flotante */
+.nav-wrap{position:fixed;top:14px;left:0;right:0;z-index:50;padding:0 16px;pointer-events:none}
+.nav{pointer-events:auto;max-width:1120px;margin:0 auto;height:62px;padding:0 10px 0 20px;display:flex;align-items:center;gap:6px;border-radius:999px}
+.brand{margin-right:auto;display:flex;align-items:center;border-radius:10px}
+.brand img{height:34px;width:auto}
+:root[data-theme="light"] .lg-oscuro,:root:not([data-theme="light"]) .lg-claro{display:none}
+.nav .links{display:flex;gap:2px;margin-right:6px}
+.nav .links a{padding:8px 14px;border-radius:999px;font-size:.92rem;color:var(--muted);transition:color .2s,background .2s}
+.nav .links a:hover{color:var(--text);background:var(--fill)}
+.icon-btn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;flex:none;color:var(--text);transition:background .2s}
+.icon-btn:hover{background:var(--fill)}
+.icon-btn svg{width:20px;height:20px}
+.theme .i-sun,:root[data-theme="light"] .theme .i-moon{display:none}
+:root[data-theme="light"] .theme .i-sun{display:block}
+.menu{display:none}
+.menu .i-close,.menu[aria-expanded="true"] .i-open{display:none}
+.menu[aria-expanded="true"] .i-close{display:block}
+
+/* 6. Inicio */
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:120px 0 72px}
+.hero-card{max-width:780px;padding:clamp(28px,5vw,58px)}
+.hero h1{font-size:clamp(2.5rem,6.4vw,5rem);line-height:1.02;letter-spacing:-.045em}
+.lead{margin-top:20px;font-size:clamp(1.05rem,1.8vw,1.25rem);color:var(--muted);max-width:52ch}
+.chips{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:30px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 14px 7px 11px;border-radius:999px;font-size:.86rem;color:var(--muted);background:var(--fill);border:1px solid var(--rim-soft)}
+.chip svg{width:17px;height:17px;color:var(--steel)}
+
+/* 7. Servicios */
+.sec{padding:clamp(56px,9vw,100px) 0}
+.sec-title{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:28px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{padding:26px;display:flex;flex-direction:column;gap:8px}
+.ico-wrap{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;margin-bottom:8px;color:var(--gold-text);background:var(--fill);border:1px solid var(--rim-soft);box-shadow:inset 0 1px 0 var(--spec)}
+.ico-wrap svg{width:25px;height:25px}
+.card h3{font-size:1.14rem;letter-spacing:-.015em;line-height:1.25}
+.card p{color:var(--muted);font-size:.96rem}
+
+/* 8. Calculadora y proceso */
+.tool{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;padding:clamp(26px,4.5vw,48px)}
+.tool .sec-title{margin-bottom:0}
+.tool p{color:var(--muted);margin:14px 0 24px;max-width:46ch}
+.tool-art{width:100%;height:auto}
+.tool-art .grid path{stroke:var(--grid);stroke-width:1;fill:none}
+.tool-art .poly{fill:var(--poly);stroke:var(--gold);stroke-width:2.2;stroke-linejoin:round}
+.tool-art .vtx circle{fill:var(--bg);stroke:var(--steel);stroke-width:2}
+.tool-art .lbl text{font:600 12px var(--font);fill:var(--muted)}
+.tool-art .area{font:800 24px var(--font);fill:var(--text);letter-spacing:-.02em}
+.tool-art .north{stroke:var(--muted);stroke-width:1.6;fill:var(--muted);stroke-linejoin:round}
+
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{padding:26px}
+.num{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;margin-bottom:18px;font-weight:700;color:var(--on-gold);background:var(--gold-fill);border:1px solid var(--gold-rim);box-shadow:inset 0 1px 0 rgba(255,250,232,.85)}
+.step h3{font-size:1.14rem;letter-spacing:-.015em}
+.step p{color:var(--muted);font-size:.96rem;margin-top:8px}
+
+/* 9. Contacto */
+.cta{text-align:center;padding:clamp(34px,6vw,68px) clamp(22px,5vw,60px)}
+.cta h2{font-size:clamp(1.9rem,4.6vw,3.1rem);letter-spacing:-.04em}
+.cta p{color:var(--muted);margin:14px auto 0;max-width:46ch;font-size:1.05rem}
+
+/* 10. Pie y botón de WhatsApp */
+.foot{padding:0 0 28px}
+.foot-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 22px;padding:16px 24px;border-radius:22px;font-size:.86rem;color:var(--muted)}
+.foot-links{display:flex;gap:20px}
+.foot-links a{transition:color .2s}
+.foot-links a:hover{color:var(--text)}
+.fab-wa{position:fixed;right:18px;bottom:18px;z-index:60;isolation:isolate;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:#FFFFFF;
+  background:rgba(37,211,102,.90);border:1px solid rgba(200,255,222,.55);
+  backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 26px rgba(0,0,0,.28);transition:transform .2s}
+.fab-wa::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 55%);z-index:-1;pointer-events:none}
+.fab-wa:hover{transform:translateY(-2px)}
+.fab-wa svg{width:27px;height:27px;stroke-width:1.7}
+#toast{position:fixed;left:50%;bottom:26px;z-index:90;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:11px 20px;border-radius:999px;background:var(--glass-strong);border:1px solid var(--rim-soft);font-size:.9rem;transition:opacity .25s,transform .25s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Entrada del inicio: un solo movimiento al cargar */
+.hero-card{animation:rise .9s cubic-bezier(.3,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* 11. Animación apagada */
+[data-motion="off"] .hero-card{animation:none}
+[data-motion="off"] html,[data-motion="off"]{scroll-behavior:auto}
+
+/* 12. Pantallas pequeñas */
+@media (max-width:980px){
+  .grid3{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:860px){
+  .menu{display:grid}
+  .nav{position:relative}
+  .nav .links{position:absolute;top:calc(100% + 10px);left:0;right:0;margin:0;flex-direction:column;padding:10px;border-radius:24px;
+    background:var(--glass-strong);border:1px solid var(--rim-soft);box-shadow:var(--shadow);
+    backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);
+    opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .2s,transform .25s}
+  .nav .links.open{opacity:1;transform:none;pointer-events:auto}
+  /* Con el menú abierto, el resto de la página se oscurece y desenfoca */
+  .nav-wrap::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--scrim);opacity:0;pointer-events:none;transition:opacity .25s;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  html.menu-open .nav-wrap::before{opacity:1;pointer-events:auto}
+  html.menu-open .fab-wa{opacity:0;pointer-events:none}
+  .nav .links a{padding:13px 16px;font-size:1.02rem;color:var(--text)}
+  .tool{grid-template-columns:1fr}
+  .tool-art{max-width:420px}
+  .steps{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  .grid3{grid-template-columns:1fr}
+  .hero{padding:104px 0 56px;align-items:flex-end}
+  .nav{height:58px;padding-left:16px}
+  .brand img{height:30px}
+  .actions .btn{flex:1 1 auto}
+  .foot-in{border-radius:20px;flex-direction:column;align-items:flex-start}
+}
+@media (max-width:400px){
+  .nav-cta{display:none}
+}
