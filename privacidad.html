@@ -13,21 +13,19 @@
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<link rel="stylesheet" href="css/styles.css?v=11">
-<script src="js/config.js?v=11"></script>
+<link rel="stylesheet" href="css/styles.css?v=ab51fb64c4">
+<!-- Tema y animación antes de pintar la página, para que no parpadee (igual en todas las páginas) -->
 <script>
 (function(){
-  var d=document.documentElement,c=typeof CONFIG!=='undefined'?CONFIG:{},t=null,m=null;
-  d.classList.add('js');
+  var d=document.documentElement,t=null,m=null;
   try{t=localStorage.getItem('gf-theme');m=localStorage.getItem('gf-motion')}catch(e){}
-  if(t!=='light'&&t!=='dark'){var p=c.temaInicial||'oscuro';t=p==='claro'?'light':p==='sistema'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):'dark'}
-  if(m!=='on'&&m!=='off'){m=(c.animacion===false||(c.respetarReducirMovimiento&&matchMedia('(prefers-reduced-motion: reduce)').matches))?'off':'on'}
-  d.setAttribute('data-theme',t);d.setAttribute('data-motion',m);
-  if(location.protocol==='file:'){var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:wght@300..900&family=JetBrains+Mono:wght@100..800&display=swap';document.head.appendChild(l)}
+  d.setAttribute('data-theme',t==='light'?'light':'dark');
+  d.setAttribute('data-motion',m==='off'?'off':'on');
 })();
 </script>
-<script src="js/nucleo.js?v=11" defer></script>
-<script src="js/fondo.js?v=11" defer></script>
+<script src="js/config.js?v=4aae51b055" defer></script>
+<script src="js/nucleo.js?v=0038491042" defer></script>
+<script src="js/fondo.js?v=a1a1edf71c" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -36,8 +34,8 @@
 <header class="hdr">
   <div class="nav">
     <a class="brand" href="index.html" aria-label="GF Topografías Colombia: ir al inicio">
-      <img class="lg lg-oscuro" src="img/logo-horizontal-blanco.svg" alt="" width="310" height="56">
-      <img class="lg lg-claro" src="img/logo-horizontal.svg" alt="" width="310" height="56">
+      <img class="lg lg-oscuro" src="img/logo-horizontal-blanco.svg" alt="" width="310" height="56" loading="lazy" decoding="async">
+      <img class="lg lg-claro" src="img/logo-horizontal.svg" alt="" width="310" height="56" loading="lazy" decoding="async">
     </a>
     <div class="tgls">
       <button class="sw" type="button" role="switch" data-switch="theme" aria-checked="true" aria-label="Modo oscuro" data-tip="Modo oscuro">

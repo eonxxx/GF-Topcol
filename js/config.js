@@ -12,7 +12,7 @@ const CONFIG = {
   ciudad:   'Colombia',            // ubicación que se muestra en la página (solo el país)
 
   /* Apariencia */
-  temaInicial: 'oscuro',           // 'oscuro', 'claro' o 'sistema' (sigue el modo del celular o computador)
+  temaInicial: 'oscuro',           // 'oscuro', 'claro' o 'sistema' (sigue el modo del celular o computador). Si no es 'oscuro', la primera visita puede mostrar el modo oscuro un instante
   animacion: true,                 // true: el fondo de curvas y los paisajes se mueven solos al abrir la página
   respetarReducirMovimiento: false // true: si el visitante activó "reducir movimiento" en su equipo, la animación empieza apagada
 };

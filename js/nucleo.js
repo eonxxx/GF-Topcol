@@ -140,11 +140,11 @@ function syncSwitches(){
   const dark=root.dataset.theme!=='light',on=MOTION.on;
   $$('[data-switch="theme"]').forEach(b=>{
     b.setAttribute('aria-checked',String(dark));
-    if(b.hasAttribute('data-tip'))b.dataset.tip=dark?'Modo oscuro · cambiar a claro':'Modo claro · cambiar a oscuro';
+    if(b.hasAttribute('data-tip'))b.dataset.tip=dark?'Cambiar a modo claro':'Cambiar a modo oscuro';
   });
   $$('[data-switch="motion"]').forEach(b=>{
     b.setAttribute('aria-checked',String(on));
-    if(b.hasAttribute('data-tip'))b.dataset.tip=on?'Animación encendida · pausar':'Animación pausada · encender';
+    if(b.hasAttribute('data-tip'))b.dataset.tip=on?'Pausar la animación':'Encender la animación';
   });
   $$('[data-state="theme"]').forEach(e=>{e.textContent=dark?'Activado':'Desactivado'});
   $$('[data-state="motion"]').forEach(e=>{e.textContent=on?'Las curvas y los paisajes se mueven':'Todo quieto'});
@@ -167,7 +167,26 @@ document.addEventListener('click',e=>{
   if(b.dataset.switch==='theme')setTheme(root.dataset.theme==='light'?'dark':'light',true);
   else{setMotion(!MOTION.on,true);toast(MOTION.on?'Animación encendida':'Animación pausada')}
 });
+
+/* Valores iniciales de config.js para quien todavía no ha elegido tema ni animación.
+   El script del <head> ya pintó la página en oscuro y con animación (lo más común). */
+(()=>{
+  let t=null,m=null;
+  try{t=localStorage.getItem('gf-theme');m=localStorage.getItem('gf-motion')}catch(e){}
+  if(t!=='light'&&t!=='dark'){
+    const p=CONFIG.temaInicial||'oscuro';
+    const quiere=p==='claro'?'light':p==='sistema'&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(quiere!==root.dataset.theme)root.setAttribute('data-theme',quiere);
+  }
+  if(m!=='on'&&m!=='off'&&(CONFIG.animacion===false||(CONFIG.respetarReducirMovimiento&&matchMedia('(prefers-reduced-motion: reduce)').matches)))root.setAttribute('data-motion','off');
+})();
+/* Si abres el archivo directamente (sin servidor), el navegador bloquea las fuentes locales: se usan las de Google Fonts */
+if(location.protocol==='file:'){const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700..800&family=Figtree:wght@300..900&family=JetBrains+Mono:wght@500&display=swap';document.head.appendChild(l)}
 themeColors();syncSwitches();
+/* Los logos llevan loading="lazy": al abrir solo se descarga el del modo actual.
+   El del otro modo se pide cuando alguien va a usar el interruptor de tema. */
+const pedirLogos=e=>{if(e.target.closest&&e.target.closest('[data-switch="theme"]')){$$('img.lg-oscuro,img.lg-claro').forEach(i=>{i.loading='eager'});['pointerover','pointerdown','focusin'].forEach(t=>document.removeEventListener(t,pedirLogos))}};
+['pointerover','pointerdown','focusin'].forEach(t=>document.addEventListener(t,pedirLogos,{passive:true}));
 
 /* ---------- Datos de la empresa en la página (desde config.js) ---------- */
 (()=>{

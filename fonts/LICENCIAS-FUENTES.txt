@@ -2,7 +2,7 @@ Fuentes incluidas en este sitio. Todas usan la licencia SIL Open Font License 1.
 que permite usarlas y distribuirlas junto con el sitio web.
 
 ======================================================================
-bricolage-grotesque.woff2
+bricolage-800.woff2 y bricolage-700.woff2 (cortes fijos 800 y 700 de Bricolage Grotesque, recortados a los caracteres del español)
 ======================================================================
 Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage)
 
@@ -196,7 +196,7 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
 
 ======================================================================
-jetbrains-mono.woff2
+jetbrains-mono-500.woff2 (corte fijo 500 de JetBrains Mono, recortado a los caracteres del español)
 ======================================================================
 Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono) JetBrainsMono-Italic[wght].ttf: Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
 

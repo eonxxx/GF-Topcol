@@ -695,12 +695,16 @@ function render(i,t){
   c.drawImage(i.B,0,0,i.w,i.h);
   for(const a of i.acts){c.save();a(c,t);c.restore()}
 }
+/* Cada paisaje se dibuja la primera vez que se acerca a la pantalla (o cuando alguien
+   pide una copia con ensure): abrir la página no paga por los que están más abajo. */
 function mount(cv,name,o){
   const i={cv,name,o:o||{},vis:false,last:0,w:0,h:0,A:document.createElement('canvas'),B:document.createElement('canvas'),acts:[],sky:null};
   list.push(i);
-  if('IntersectionObserver' in window)new IntersectionObserver(es=>{i.vis=es[0].isIntersecting},{rootMargin:'160px'}).observe(cv);else i.vis=true;
-  if('ResizeObserver' in window){let tm;new ResizeObserver(()=>{clearTimeout(tm);tm=setTimeout(()=>{const r=cv.getBoundingClientRect();if(Math.round(r.width)!==i.w||Math.round(r.height)!==i.h)build(i)},120)}).observe(cv)}
-  build(i);
+  const io='IntersectionObserver' in window;
+  if(io)new IntersectionObserver(es=>{i.vis=es[0].isIntersecting;if(i.vis&&!i.w)build(i)},{rootMargin:'300px'}).observe(cv);else i.vis=true;
+  if('ResizeObserver' in window){let tm;new ResizeObserver(()=>{clearTimeout(tm);tm=setTimeout(()=>{if(!i.w)return;const r=cv.getBoundingClientRect();if(Math.round(r.width)!==i.w||Math.round(r.height)!==i.h)build(i)},120)}).observe(cv)}
+  if(!io)build(i);
+  else{const r=cv.getBoundingClientRect();if(r.bottom>-300&&r.top<innerHeight+300)build(i)}
   return i;
 }
 function tick(now){
@@ -714,7 +718,8 @@ function tick(now){
 }
 return{
   mount,tick,list,SCENES,
-  rebuild:all=>list.forEach(i=>{if(all||typeof i.o.pal==='function')build(i)}),
+  rebuild:all=>list.forEach(i=>{if(i.w&&(all||typeof i.o.pal==='function'))build(i)}),
+  ensure:i=>{if(!i.w)build(i)},
   setScene:(i,name,o)=>{i.name=name;if(o)Object.assign(i.o,o);build(i)}
 };
 })();

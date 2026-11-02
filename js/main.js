@@ -26,19 +26,19 @@ const PLAZO='Según el área y el acceso; lo confirmamos al cotizar';
 const SERVICES=[
   {key:'lev',name:'Levantamiento topográfico',short:'Fincas, lotes y proyectos',
    desc:'Medimos linderos, construcciones, vías y cotas para que tengas el estado real del terreno.',
-   eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Plano topográfico DWG','Georreferenciado en MAGNA-SIRGAS','Puntos XYZ']},
+   eq:'Estación total y GNSS RTK',plazo:PLAZO,out:['Plano topográfico DWG','Georreferenciado en MAGNA-SIRGAS','Puntos XYZ']},
   {key:'lin',name:'Loteo y linderos',short:'División de predios y mojones',
    desc:'Dividimos el terreno en lotes y ubicamos los linderos.',
-   eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Plano de loteo','Cuadro de áreas y coordenadas','Mojones en campo']},
+   eq:'Estación total y GNSS RTK',plazo:PLAZO,out:['Plano de loteo','Cuadro de áreas y coordenadas','Mojones en campo']},
   {key:'vol',name:'Curvas de nivel y volúmenes',short:'Modelo 3D, cortes y llenos',
    desc:'Modelamos el terreno y calculamos cortes y llenos. Mueve la cota de proyecto y mira cómo cambian.',
-   eq:'GNSS RTK · Estación total · Dron',plazo:PLAZO,out:['Curvas de nivel','Modelo 3D','Perfiles y secciones','Cálculo de volúmenes']},
+   eq:'GNSS RTK, estación total y dron',plazo:PLAZO,out:['Curvas de nivel','Modelo 3D','Perfiles y secciones','Cálculo de volúmenes']},
   {key:'rep',name:'Apoyo topográfico en obras civiles',short:'Vías, puentes y urbanismo',
    desc:'Acompañamos la obra con replanteo, control de niveles y seguimiento del avance.',
-   eq:'Estación total · GNSS RTK',plazo:PLAZO,out:['Replanteo de ejes y niveles','Control de cotas','Planos de obra construida']},
+   eq:'Estación total y GNSS RTK',plazo:PLAZO,out:['Replanteo de ejes y niveles','Control de cotas','Planos de obra construida']},
   {key:'dro',name:'Fotogrametría',short:'Áreas grandes o de difícil acceso',
    desc:'Con vuelos de dron cubrimos grandes extensiones en poco tiempo.',
-   eq:'Dron · GNSS RTK',plazo:PLAZO,out:['Ortomosaico','Modelo 3D','Curvas de nivel','Cálculo de volúmenes']}
+   eq:'Dron y GNSS RTK',plazo:PLAZO,out:['Ortomosaico','Modelo 3D','Curvas de nivel','Cálculo de volúmenes']}
 ];
 const PROJECTS=[
   {id:'p1',tipo:'predios',scene:'finca',pal:'day',seed:3,svc:'Levantamiento topográfico',tag:'Predios rurales',title:'Fincas y linderos',text:'Linderos, áreas y cercas de fincas ganaderas y agrícolas.',list:['Servicio: levantamiento topográfico y linderos','Entregables: plano DWG, cuadro de áreas y coordenadas']},
@@ -66,18 +66,6 @@ function onScroll(){
 }
 addEventListener('scroll',onScroll,{passive:true});
 topBtn.addEventListener('click',()=>scrollTo({top:0,behavior:MOTION.on?'smooth':'auto'}));
-
-/* ---------- Entrada al hacer scroll y contadores ---------- */
-function countUp(el){
-  const to=+el.dataset.count,pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
-  if(!MOTION.on){el.textContent=pre+to+suf;return}
-  const t0=performance.now(),dur=1300;
-  (function s(n){const p=clamp((n-t0)/dur,0,1);el.textContent=pre+Math.round(to*ease(p))+suf;if(p<1)requestAnimationFrame(s)})(t0);
-}
-const revIO=new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting){e.target.classList.add('in');revIO.unobserve(e.target);$$('[data-count]',e.target).forEach(countUp)}
-}),{threshold:.1});
-$$('.reveal').forEach(el=>revIO.observe(el));
 
 /* ---------- Hero: coordenadas y cota bajo el cursor ----------
    Sistema local de ejemplo (E 1000, N 1000, cota 100): no corresponde a ningún lugar real */
@@ -308,8 +296,7 @@ const calc=(()=>{
     const t0=performance.now();cancelAnimationFrame(el._r);
     (function s(n){const p=clamp((n-t0)/350,0,1),q=1-Math.pow(1-p,3);el.textContent=fmt(lerp(from,v,q),d);if(p<1)el._r=requestAnimationFrame(s)})(t0);
   };
-  const dms=deg=>{let d=Math.floor(deg),mm=(deg-d)*60,m=Math.floor(mm),s=(mm-m)*60;if(s>=59.95){s=0;m++}if(m>=60){m=0;d++}return d+'°'+String(m).padStart(2,'0')+"'"+fmt(s,1).padStart(4,'0')+'"'};
-  const valid=()=>pts.length>=3&&pts.every(p=>isFinite(p.e)&&isFinite(p.n));
+  const dms=Geometria.aDMS;
 
   function renderRows(){
     body.innerHTML='';
@@ -324,30 +311,8 @@ const calc=(()=>{
   }
   function syncRow(i){const r=$$('.vrow',body)[i];if(!r)return;const ins=$$('input',r);ins[0].value=pts[i].e;ins[1].value=pts[i].n}
 
-  function segInter(a,b,c,d){
-    const o=(p,q,r)=>(q.e-p.e)*(r.n-p.n)-(q.n-p.n)*(r.e-p.e);
-    const d1=o(a,b,c),d2=o(a,b,d),d3=o(c,d,a),d4=o(c,d,b);
-    return((d1>0&&d2<0)||(d1<0&&d2>0))&&((d3>0&&d4<0)||(d3<0&&d4>0));
-  }
-  function crosses(){
-    const n=pts.length;if(n<4)return false;
-    for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){
-      if(j===i+1||(i===0&&j===n-1))continue;
-      if(segInter(pts[i],pts[(i+1)%n],pts[j],pts[(j+1)%n]))return true;
-    }
-    return false;
-  }
-  function compute(){
-    if(!valid()){last=null;return null}
-    const n=pts.length,e0=pts[0].e,n0=pts[0].n;let a2=0,per=0;const sides=[];
-    for(let i=0;i<n;i++){
-      const j=(i+1)%n,x1=pts[i].e-e0,y1=pts[i].n-n0,x2=pts[j].e-e0,y2=pts[j].n-n0;
-      a2+=x1*y2-x2*y1;
-      const dE=pts[j].e-pts[i].e,dN=pts[j].n-pts[i].n,d=Math.hypot(dE,dN),az=(Math.atan2(dE,dN)*180/Math.PI+360)%360;
-      per+=d;sides.push({i,j,d,az});
-    }
-    last={area:Math.abs(a2)/2,per,sides,crossing:crosses()};return last;
-  }
+  /* Área, perímetro, distancias y azimuts: js/geometria.js */
+  function compute(){last=Geometria.medir(pts);return last}
   function update(){
     const r=compute();draw();
     const btns=['cCopy','cCsv','cQuote'].map(id=>$('#'+id));
@@ -358,9 +323,9 @@ const calc=(()=>{
       return;
     }
     btns.forEach(b=>b.disabled=false);
-    num($('#rM2'),r.area,2);num($('#rHa'),r.area/10000,4);num($('#rFan'),r.area/6400,4);num($('#rPer'),r.per,2);
-    warn.textContent=r.crossing?'Atención: los lados del polígono se cruzan. Revisa el orden de los vértices.':'';
-    sidesEl.innerHTML=r.sides.map(s=>'<tr><td>V'+(s.i+1)+'–V'+(s.j+1)+'</td><td>'+fmt(s.d,2)+'</td><td>'+dms(s.az)+'</td></tr>').join('');
+    num($('#rM2'),r.area,2);num($('#rHa'),r.area/10000,4);num($('#rFan'),r.area/6400,4);num($('#rPer'),r.perimetro,2);
+    warn.textContent=r.cruza?'Atención: los lados del polígono se cruzan. Revisa el orden de los vértices.':'';
+    sidesEl.innerHTML=r.lados.map(s=>'<tr><td>V'+(s.i+1)+'–V'+(s.j+1)+'</td><td>'+fmt(s.distancia,2)+'</td><td>'+dms(s.azimut)+'</td></tr>').join('');
   }
 
   /* Dibujo del plano */
@@ -384,7 +349,7 @@ const calc=(()=>{
     for(let e=Math.ceil(e0/gs)*gs;e<=e1;e+=gs){const x=toXY(V,e,0)[0];ctx.moveTo(x,0);ctx.lineTo(x,h)}
     for(let n=Math.ceil(n0/gs)*gs;n<=n1;n+=gs){const y=toXY(V,0,n)[1];ctx.moveTo(0,y);ctx.lineTo(w,y)}
     ctx.stroke();
-    const ok=pts.filter(p=>isFinite(p.e)&&isFinite(p.n)),P=ok.map(p=>toXY(V,p.e,p.n)),bad=last&&last.crossing;
+    const ok=pts.filter(p=>isFinite(p.e)&&isFinite(p.n)),P=ok.map(p=>toXY(V,p.e,p.n)),bad=last&&last.cruza;
     if(P.length>=2){
       ctx.beginPath();P.forEach((p,i)=>{if(i)ctx.lineTo(p[0],p[1]);else ctx.moveTo(p[0],p[1])});if(P.length>=3)ctx.closePath();
       if(P.length>=3){ctx.fillStyle=rgba(bad?C.rose:C.lav,.17);ctx.fill()}
@@ -451,33 +416,27 @@ const calc=(()=>{
   $('#vExample').addEventListener('click',()=>{pts=EXAMPLE.map(p=>({e:p[0],n:p[1]}));renderRows();update();toast('Ejemplo cargado')});
   $('#vClear').addEventListener('click',()=>{pts=[];renderRows();update()});
   $('#vImport').addEventListener('click',()=>{
-    const out=[];
-    $('#vPaste').value.split(/\r?\n/).forEach(line=>{
-      const toks=line.trim().split(/[\s;,\t]+/).filter(Boolean),isN=t=>/^-?\d+(\.\d+)?$/.test(t);
-      if(toks.length&&!isN(toks[0]))toks.shift();
-      const ns=toks.filter(isN).map(Number);if(ns.length>=2)out.push({e:ns[0],n:ns[1]});
-    });
-    if(out.length>2&&out[0].e===out[out.length-1].e&&out[0].n===out[out.length-1].n)out.pop();
+    const out=Geometria.leerCoordenadas($('#vPaste').value);
     if(out.length<3){toast('No encontré al menos 3 vértices. Usa: Este Norte');return}
     pts=out;renderRows();update();toast(out.length+' vértices importados');
   });
   $('#cCopy').addEventListener('click',async()=>{
     if(!last)return;
-    const t=['Área: '+fmt(last.area,2)+' m² ('+fmt(last.area/10000,4)+' ha · '+fmt(last.area/6400,4)+' fanegadas)','Perímetro: '+fmt(last.per,2)+' m','Vértices: '+pts.length,'']
-      .concat(last.sides.map(s=>'V'+(s.i+1)+'–V'+(s.j+1)+': '+fmt(s.d,2)+' m · Az '+dms(s.az))).join('\n');
+    const t=['Área: '+fmt(last.area,2)+' m² ('+fmt(last.area/10000,4)+' ha · '+fmt(last.area/6400,4)+' fanegadas)','Perímetro: '+fmt(last.perimetro,2)+' m','Vértices: '+pts.length,'']
+      .concat(last.lados.map(s=>'V'+(s.i+1)+'–V'+(s.j+1)+': '+fmt(s.distancia,2)+' m · Az '+dms(s.azimut))).join('\n');
     toast(await copyText(t)?'Resultados copiados':'No se pudo copiar');
   });
   $('#cCsv').addEventListener('click',()=>{
     if(!last)return;
-    const rows=['vertice,este,norte,distancia_al_siguiente_m,azimut_grados'].concat(pts.map((p,i)=>'V'+(i+1)+','+p.e+','+p.n+','+last.sides[i].d.toFixed(3)+','+last.sides[i].az.toFixed(4)));
-    rows.push('','area_m2,'+last.area.toFixed(3),'perimetro_m,'+last.per.toFixed(3));
+    const rows=['vertice,este,norte,distancia_al_siguiente_m,azimut_grados'].concat(pts.map((p,i)=>'V'+(i+1)+','+p.e+','+p.n+','+last.lados[i].distancia.toFixed(3)+','+last.lados[i].azimut.toFixed(4)));
+    rows.push('','area_m2,'+last.area.toFixed(3),'perimetro_m,'+last.perimetro.toFixed(3));
     const url=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');
     a.href=url;a.download='lote.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
     toast('CSV descargado');
   });
   $('#cQuote').addEventListener('click',()=>{
     if(!last)return;
-    prefillQuote({servicio:SERVICES[0].name,area:String(Math.round(last.area)),unidad:'m²',detalle:'Calculé en la web un lote de '+pts.length+' vértices: '+fmt(last.area,2)+' m² y perímetro de '+fmt(last.per,2)+' m.'});
+    prefillQuote({servicio:SERVICES[0].name,area:String(Math.round(last.area)),unidad:'m²',detalle:'Calculé en la web un lote de '+pts.length+' vértices: '+fmt(last.area,2)+' m² y perímetro de '+fmt(last.perimetro,2)+' m.'});
   });
   renderRows();
   return{resize,redraw:draw,update};
@@ -528,7 +487,7 @@ const compare=(()=>{
     drawContours(ctx,buildGrid(S,st.w,st.h,Math.max(5,Math.round(st.w/90))),levels,C.peach,C.lav,.5,.9,1.15);
     M.pts.forEach(p=>{ctx.fillStyle='rgba(238,242,244,.32)';ctx.beginPath();ctx.arc(p[0]*w,p[1]*h,1.2,0,6.283);ctx.fill()});
     const dec=M.paso%1===0?0:(M.paso*10)%1===0?1:2;
-    if(info)info.textContent=fmt(M.pts.length,0)+' puntos · curvas cada '+fmt(M.paso,dec)+' m';
+    if(info)info.textContent=fmt(M.pts.length,0)+' puntos, curvas cada '+fmt(M.paso,dec)+' m';
   }
   function upd(){top.style.clipPath='inset(0 '+(100-rng.value)+'% 0 0)';bar.style.left=rng.value+'%'}
   rng.addEventListener('input',upd);
@@ -548,7 +507,7 @@ const compare=(()=>{
    TRABAJOS: tarjetas con paisajes animados + detalle
    ========================================================= */
 const proj=(()=>{
-  const grid=$('#projGrid'),dlg=$('#pdlg');let cur=null;
+  const grid=$('#projGrid'),dlg=$('#pdlg'),scapes={};let cur=null;
   grid.innerHTML='';
   PROJECTS.forEach(p=>{
     const b=document.createElement('button');
@@ -556,12 +515,12 @@ const proj=(()=>{
     b.innerHTML='<canvas class="cv" aria-hidden="true"></canvas><span class="pb"><small>'+p.tag+'</small><h3>'+p.title+'</h3><span class="pt">'+p.text+'</span></span>';
     b.addEventListener('click',()=>open(p.id));
     grid.appendChild(b);
-    Scape.mount($('canvas',b),p.scene,{pal:p.pal,seed:p.seed,dpr:1.25,fps:24});
+    scapes[p.id]=Scape.mount($('canvas',b),p.scene,{pal:p.pal,seed:p.seed,dpr:1.25,fps:24});
   });
   const pd=Scape.mount($('#pdCanvas'),'finca',{pal:'day',dpr:1.5});
   function open(id){
     const p=PROJECTS.find(x=>x.id===id);if(!p)return;
-    cur=p;$('#pdTag').textContent=p.tag+' · ilustración de referencia';$('#pdTitle').textContent=p.title;$('#pdText').textContent=p.text;
+    cur=p;$('#pdTag').textContent=p.tag+' (ilustración de referencia)';$('#pdTitle').textContent=p.title;$('#pdText').textContent=p.text;
     $('#pdList').innerHTML=p.list.map(x=>'<li>'+x+'</li>').join('');
     if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');
     requestAnimationFrame(()=>Scape.setScene(pd,p.scene,{pal:p.pal,seed:p.seed}));
@@ -580,9 +539,19 @@ const proj=(()=>{
     chips.forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f===k)));
     $$('.pcard',grid).forEach(b=>{const show=k==='todos'||b.dataset.t===k;b.classList.toggle('hide',!show);if(show){b.style.animation='none';void b.offsetWidth;b.style.animation=''}});
   }
-  /* Copia el cuadro actual de una tarjeta en un canvas pequeño (miniaturas de los menús) */
+  /* Copia el cuadro actual de una tarjeta en un canvas pequeño (miniaturas de los menús).
+     Si un filtro oculta la tarjeta y nunca se dibujó, se muestra solo mientras se dibuja
+     (en el mismo cuadro, así que no se alcanza a ver). */
   function thumb(cv,id){
-    const src=$('.pcard[data-id="'+id+'"] canvas',grid);if(!src||!src.width)return;
+    const sc=scapes[id];if(!sc)return;
+    if(!sc.w){
+      const card=sc.cv.closest('.pcard'),oculta=!!card&&card.classList.contains('hide');
+      if(oculta)card.classList.remove('hide');
+      Scape.ensure(sc);
+      if(oculta)card.classList.add('hide');
+    }
+    if(!sc.w)return;
+    const src=sc.cv;
     const r=cv.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2),W=Math.max(1,Math.round(r.width*dpr)),H=Math.max(1,Math.round(r.height*dpr));
     if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
     cv.getContext('2d').drawImage(src,0,0,src.width,src.height,0,0,W,H);
@@ -733,9 +702,9 @@ $$('#faqList .q>button').forEach(b=>b.addEventListener('click',()=>{
 }));
 
 /* =========================================================
-   COTIZACIÓN: formulario, vista previa y envío
+   COTIZACIÓN: formulario y envío
    ========================================================= */
-const form=$('#quoteForm'),fServ=$('#fServicio'),prev=$('#preview'),HAS_MAIL=!!CONFIG.correo;
+const form=$('#quoteForm'),fServ=$('#fServicio'),HAS_MAIL=!!CONFIG.correo;
 SERVICES.forEach(s=>fServ.add(new Option(s.name,s.name)));
 fServ.add(new Option('Otro / no estoy seguro','Otro / no estoy seguro'));
 $$('[data-mailopt]').forEach(el=>{el.hidden=!HAS_MAIL});
@@ -752,14 +721,11 @@ function buildMsg(){
     'Urgencia: '+v('urg')+
     (v('msg')?'\nDetalles: '+v('msg'):'');
 }
-function updPrev(){if(prev)prev.textContent=buildMsg()}
-form.addEventListener('input',updPrev);form.addEventListener('change',updPrev);
 function prefillQuote(o){
   if(o.servicio)fServ.value=o.servicio;
   if(o.area)$('#fArea').value=o.area;
   if(o.unidad)$('#fUnidad').value=o.unidad;
   if(o.detalle)$('#fMsg').value=o.detalle;
-  updPrev();
   go('cotizar');
   setTimeout(()=>$('#fNombre').focus({preventScroll:true}),MOTION.on?650:0);
   toast('Formulario listo: completa tus datos');
@@ -781,7 +747,6 @@ form.addEventListener('submit',e=>{
   else{window.open(waLink(msg),'_blank','noopener');toast('Abriendo WhatsApp…')}
 });
 $('#fCopy').addEventListener('click',async()=>{toast(await copyText(buildMsg())?'Mensaje copiado':'No se pudo copiar')});
-updPrev();
 
 /* =========================================================
    ARRANQUE: bucle, tamaños y redibujos

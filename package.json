@@ -1,0 +1,14 @@
+{
+  "name": "gf-topografias-sitio",
+  "private": true,
+  "description": "Sitio web de GF Topografías Colombia, publicado con GitHub Pages desde la raíz de este repositorio.",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 \"pruebas/*.test.cjs\"",
+    "servidor": "node pruebas/servidor.cjs 8766",
+    "versionar": "node herramientas/versionar.cjs"
+  },
+  "devDependencies": {
+    "axe-core": "4.14.0",
+    "playwright": "1.63.0"
+  }
+}
