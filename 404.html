@@ -13,7 +13,7 @@
 <link rel="icon" href="/GF-Topcol/favicon.ico" sizes="32x32">
 <link rel="icon" href="/GF-Topcol/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/GF-Topcol/img/apple-touch-icon.png">
-<link rel="stylesheet" href="/GF-Topcol/css/styles.css?v=ab51fb64c4">
+<link rel="stylesheet" href="/GF-Topcol/css/styles.css?v=0815d997dd">
 <!-- Tema y animación antes de pintar la página, para que no parpadee (igual en todas las páginas) -->
 <script>
 (function(){
@@ -21,6 +21,7 @@
   try{t=localStorage.getItem('gf-theme');m=localStorage.getItem('gf-motion')}catch(e){}
   d.setAttribute('data-theme',t==='light'?'light':'dark');
   d.setAttribute('data-motion',m==='off'?'off':'on');
+  d.classList.add('js');
 })();
 </script>
 <script src="/GF-Topcol/js/config.js?v=4aae51b055" defer></script>

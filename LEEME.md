@@ -23,8 +23,9 @@ robots.txt            Instrucciones para buscadores
 sitemap.xml           Mapa del sitio para Google
 .htaccess             Ajustes para hostings con Apache/cPanel (caché, compresión, página 404); GitHub lo ignora
 .nojekyll             Le indica a GitHub Pages que publique los archivos tal cual, sin procesarlos
-landing/              Página de presentación con estilo de vidrio (index.html, landing.css, landing.js);
-                      usa la fuente, el logo, config.js y los scripts del sitio principal
+landing/              Página de presentación: el proceso en tres pasos, con vidrio y modo claro y oscuro
+                      (index.html, tokens.css con los colores y letras de la marca, base.css, landing.css,
+                      landing.js); usa las letras, el logo, config.js y los paisajes del sitio principal
 pruebas/              Pruebas automáticas (no hacen falta para publicar)
 herramientas/         versionar.cjs: actualiza las versiones "?v=" de estilos y scripts
 package.json          Órdenes para las pruebas (npm test) y el versionado (npm run versionar)
